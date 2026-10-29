@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+from homeassistant.config_entries import ConfigEntryState
 from homeassistant.helpers import device_registry as dr, frame
 
 from custom_components.truenas.diagnostics import async_get_config_entry_diagnostics
@@ -155,3 +156,40 @@ async def test_device_info_uses_no_deprecated_default_fields(
     assert sub, "the pools, disks, datasets … devices"
     assert all(d.manufacturer == "manufacturer-1" for d in sub)
     assert all(d.model == "product-1" for d in sub)
+
+
+# ---------------------------------------------------------------- bug 4: an empty CPU-temperature graph
+def with_cputemp(truenas_api, mean):
+    graphs = truenas_api.responses["reporting.netdata_get_data"]
+    truenas_api.responses["reporting.netdata_get_data"] = lambda params: [
+        *graphs(params),
+        {
+            "name": "cputemp",
+            "identifier": "cputemp",
+            "legend": ["time", *mean],
+            "aggregations": {"mean": mean},
+            "data": [],
+        },
+    ]
+
+
+async def test_an_empty_cpu_temperature_graph_does_not_fail_the_update(
+    hass, truenas_api, config_entry
+):
+    """A NAS whose sensors return nothing: `max()` of an empty mean raised, and the WHOLE update failed — every
+    entity unavailable, for want of one temperature. The reading is unknown instead."""
+    with_cputemp(truenas_api, {})
+    config_entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert state(hass, "binary_sensor.truenas_services_ssh").state == "on"
+    assert state(hass, "sensor.truenas_system_temperature").state == "unknown"
+
+
+async def test_a_core_without_a_reading_is_skipped(hass, truenas_api, config_entry):
+    with_cputemp(truenas_api, {"cpu0": None, "cpu1": 40.5})
+    config_entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    assert state(hass, "sensor.truenas_system_temperature").state == "40.5"
