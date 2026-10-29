@@ -199,3 +199,58 @@ async def test_an_error_reply_to_app_upgrade_is_not_an_upgrade_in_progress(
         "update", "install", {"entity_id": APP_UPDATE}, blocking=True
     )
     assert entity.in_progress is False
+
+
+# ---------------------------------------------------------------- bug 2: TrueNAS 25.10's update API
+SYSTEM_UPDATE = "update.truenas_system"
+
+
+async def test_on_25_10_an_available_system_update_comes_from_update_status(
+    hass, truenas_api, setup, caplog
+):
+    """25.10 removed update.check_available (logged as "Method does not exist" twice a day): update.status says."""
+    truenas_api.responses["update.status"]["status"]["new_version"] = {
+        "version": "25.10.8",
+        "train": "TrueNAS-SCALE-Goldeye",
+    }
+    await setup()
+    st = hass.states.get(SYSTEM_UPDATE)
+    assert st.state == "on" and st.attributes["latest_version"] == "25.10.8"
+    assert not truenas_api.called("update.check_available")
+    assert "Method does not exist" not in caplog.text and "not found" not in caplog.text
+
+
+async def test_on_25_10_no_new_version_is_up_to_date(hass, truenas_api, setup):
+    await setup()  # the recording: update.status new_version is null
+    st = hass.states.get(SYSTEM_UPDATE)
+    assert st.state == "off" and st.attributes["latest_version"] == "25.10.7"
+    assert truenas_api.called("update.status")
+
+
+async def test_on_25_10_install_runs_the_update(hass, truenas_api, setup):
+    """update.update is the update CONFIGURATION on 25.10; installing is update.run."""
+    truenas_api.responses["update.status"]["status"]["new_version"] = {
+        "version": "25.10.8"
+    }
+    truenas_api.responses["update.run"] = 4321
+    await setup()
+    await hass.services.async_call(
+        "update", "install", {"entity_id": SYSTEM_UPDATE}, blocking=True
+    )
+    assert truenas_api.called("update.run") == [[{"reboot": True}]]
+    assert not truenas_api.called("update.update")
+
+
+async def test_before_25_10_install_keeps_update_update(hass, truenas_api, setup):
+    truenas_api.responses["update.check_available"] = {
+        "status": "AVAILABLE",
+        "version": "25.04.3",
+    }
+    truenas_api.responses["system.info"]["version"] = "25.04.2"
+    truenas_api.responses["update.update"] = 4321
+    await setup()
+    await hass.services.async_call(
+        "update", "install", {"entity_id": SYSTEM_UPDATE}, blocking=True
+    )
+    assert truenas_api.called("update.update") == [[{"reboot": True}]]
+    assert not truenas_api.called("update.run")
