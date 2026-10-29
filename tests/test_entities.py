@@ -177,14 +177,15 @@ async def test_an_empty_cpu_temperature_graph_does_not_fail_the_update(
     hass, truenas_api, config_entry
 ):
     """A NAS whose sensors return nothing: `max()` of an empty mean raised, and the WHOLE update failed — every
-    entity unavailable, for want of one temperature. The reading is unknown instead."""
+    entity unavailable, for want of one temperature."""
     with_cputemp(truenas_api, {})
     config_entry.add_to_hass(hass)
     assert await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
     assert config_entry.state is ConfigEntryState.LOADED
     assert state(hass, "binary_sensor.truenas_services_ssh").state == "on"
-    assert state(hass, "sensor.truenas_system_temperature").state == "unknown"
+    # no reading is no reading: the integration creates no entity for a value it does not have (rather than a 0 °C)
+    assert hass.states.get("sensor.truenas_system_temperature") is None
 
 
 async def test_a_core_without_a_reading_is_skipped(hass, truenas_api, config_entry):

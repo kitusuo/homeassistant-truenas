@@ -404,8 +404,16 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
             # CPU temperature
             if tmp_graph[i]["name"] == "cputemp":
                 if "aggregations" in tmp_graph[i]:
-                    self.ds["system_info"]["cpu_temperature"] = round(
-                        max(tmp_graph[i]["aggregations"]["mean"].values()), 2
+                    # the hottest core; a core without a reading is skipped, and no
+                    # reading at all is unknown (max() of an empty mean raised and
+                    # failed the whole update)
+                    readings = [
+                        v
+                        for v in tmp_graph[i]["aggregations"]["mean"].values()
+                        if v is not None
+                    ]
+                    self.ds["system_info"]["cpu_temperature"] = (
+                        round(max(readings), 2) if readings else None
                     )
                 else:
                     self.ds["system_info"]["cpu_temperature"] = 0.0
