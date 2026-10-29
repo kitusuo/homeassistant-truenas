@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import device_registry as dr, frame
 
 from custom_components.truenas.diagnostics import async_get_config_entry_diagnostics
 
@@ -122,3 +122,36 @@ async def test_diagnostics_redact_the_secrets(hass, setup_integration):
     assert diag["entry"]["data"]["host"] == "**REDACTED**"
     assert diag["data"]["system_info"]["system_serial"] == "**REDACTED**"
     assert diag["data"]["pool"], "the rest of the data is there"
+
+
+# ---------------------------------------------------------------- bug 3: entity ids and device info HA deprecates
+async def setup_fresh(hass, config_entry):
+    """Set up with HA's report-once memory cleared: a deprecation already reported by an earlier test in the same
+    process would otherwise be silent here."""
+    frame._REPORTED_INTEGRATIONS.clear()
+    config_entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+
+
+async def test_no_invalid_entity_id_is_built(hass, truenas_api, config_entry, caplog):
+    """An entity with no name of its own built "update.truenas_system_" (trailing "_"), which HA refuses from
+    2027.2 ("sets an invalid entity ID")."""
+    await setup_fresh(hass, config_entry)
+    assert "invalid entity ID" not in caplog.text
+    assert hass.states.get("update.truenas_system") is not None
+
+
+async def test_device_info_uses_no_deprecated_default_fields(
+    hass, truenas_api, config_entry, caplog
+):
+    """default_name / default_model / default_manufacturer are removed in HA 2027.9."""
+    await setup_fresh(hass, config_entry)
+    assert "deprecated `default_" not in caplog.text
+    devices = dr.async_entries_for_config_entry(
+        dr.async_get(hass), config_entry.entry_id
+    )
+    sub = [d for d in devices if d.name != "System"]
+    assert sub, "the pools, disks, datasets … devices"
+    assert all(d.manufacturer == "manufacturer-1" for d in sub)
+    assert all(d.model == "product-1" for d in sub)
