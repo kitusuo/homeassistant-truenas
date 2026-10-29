@@ -120,7 +120,14 @@ class TrueNASEntity(CoordinatorEntity[TrueNASCoordinator], Entity):
             if dev_group in self._data:
                 dev_group = self._data[dev_group]
 
-        self.entity_id = f"{platform.domain}.{self._inst.lower()}_{slugify(str(dev_group).lower())}_{slugify(str(self.name).lower())}"
+        # An entity with no name of its own (the system update) left a trailing "_":
+        # "update.truenas_system_" is not a valid entity ID (refused from HA 2027.2).
+        parts = (
+            self._inst.lower(),
+            slugify(str(dev_group).lower()),
+            slugify(str(self.name).lower()),
+        )
+        self.entity_id = f"{platform.domain}." + "_".join(p for p in parts if p)
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -191,9 +198,10 @@ class TrueNASEntity(CoordinatorEntity[TrueNASCoordinator], Entity):
         else:
             return DeviceInfo(
                 connections={(dev_connection, f"{dev_connection_value}")},
-                default_name=dev_group,
-                default_model=f"{self.coordinator.data['system_info']['system_product']}",
-                default_manufacturer=f"{self.coordinator.data['system_info']['system_manufacturer']}",
+                # the default_* parameters are deprecated (removed in HA 2027.9)
+                name=dev_group,
+                model=f"{self.coordinator.data['system_info']['system_product']}",
+                manufacturer=f"{self.coordinator.data['system_info']['system_manufacturer']}",
                 via_device=(
                     DOMAIN,
                     f"{self._inst}_{self.coordinator.data['system_info']['hostname']}",
