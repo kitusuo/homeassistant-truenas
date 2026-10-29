@@ -252,3 +252,23 @@ async def test_a_batch_that_failed_once_is_not_retried_for_ever(
     coordinator = hass.data["truenas"][config_entry.entry_id]
     assert coordinator._systemstats_errored == []
     assert len(batches) < 20
+
+
+async def test_one_failing_interface_graph_sets_aside_only_that_interface(
+    hass, truenas_api, config_entry
+):
+    """Every interface graph is named "interface": set aside by name, one bad interface hid them all."""
+    graphs = truenas_api.responses["reporting.netdata_get_data"]
+
+    def answer(params):
+        if any(g.get("identifier") == "eth2" for g in params[0]):
+            return {"jsonrpc": "2.0", "id": 0, "error": {"code": 22, "message": "x"}}
+        return graphs(params)
+
+    truenas_api.responses["reporting.netdata_get_data"] = answer
+    config_entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    coordinator = hass.data["truenas"][config_entry.entry_id]
+    assert coordinator._systemstats_errored == [("interface", "eth2")]
+    assert state(hass, "sensor.truenas_system_eth1_rx").state == "0.00145408"
