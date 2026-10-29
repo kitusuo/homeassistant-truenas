@@ -104,3 +104,98 @@ async def test_a_running_system_update_job_reports_its_progress(
     jobs[0]["state"] = "SUCCESS"
     await coordinator.async_refresh()
     assert coordinator.ds["system_info"]["update_jobid"] == 0
+
+
+# ---------------------------------------------------------------- bug 1: an app update stuck "in progress"
+def jobs(*records):
+    """core.get_jobs over a mutable job list, honouring the [["id", "=", n]] filter."""
+    store = list(records)
+
+    def answer(params):
+        return [j for j in store if j["id"] == params[0][0][2]]
+
+    answer.store = store
+    return answer
+
+
+async def test_an_app_upgrade_is_in_progress_only_while_its_job_runs(
+    hass, truenas_api, setup
+):
+    """After one upgrade, the next must install: the job id must not keep the app "in progress" for ever
+    (every later install was refused with "Update installation already in progress" until HA restarted).
+    """
+    app = app_with_update(truenas_api)
+    truenas_api.responses["app.upgrade"] = 9429
+    job = {"id": 9429, "method": "app.upgrade", "state": "RUNNING"}
+    truenas_api.responses["core.get_jobs"] = jobs(job)
+    await setup()
+    entity = hass.data["update"].get_entity(APP_UPDATE)
+    coordinator = next(iter(hass.data["truenas"].values()))
+
+    await hass.services.async_call(
+        "update", "install", {"entity_id": APP_UPDATE}, blocking=True
+    )
+    assert entity.in_progress is True, "while the upgrade job runs"
+
+    job["state"] = "SUCCESS"
+    await coordinator.async_refresh()
+    await hass.async_block_till_done()
+    assert entity.in_progress is False, "the job has finished"
+
+    await hass.services.async_call(
+        "update", "install", {"entity_id": APP_UPDATE}, blocking=True
+    )
+    assert truenas_api.called("app.upgrade") == [[app["id"]], [app["id"]]]
+
+
+@pytest.mark.parametrize("final", ["FAILED", "ABORTED"])
+async def test_a_failed_app_upgrade_is_no_longer_in_progress(
+    hass, truenas_api, setup, final
+):
+    app_with_update(truenas_api)
+    truenas_api.responses["app.upgrade"] = 9429
+    job = {"id": 9429, "method": "app.upgrade", "state": "RUNNING"}
+    truenas_api.responses["core.get_jobs"] = jobs(job)
+    await setup()
+    entity = hass.data["update"].get_entity(APP_UPDATE)
+    coordinator = next(iter(hass.data["truenas"].values()))
+    await hass.services.async_call(
+        "update", "install", {"entity_id": APP_UPDATE}, blocking=True
+    )
+    job["state"] = final
+    await coordinator.async_refresh()
+    assert entity.in_progress is False
+
+
+async def test_a_job_truenas_no_longer_knows_is_not_in_progress(
+    hass, truenas_api, setup
+):
+    """TrueNAS restarted: core.get_jobs no longer has the job."""
+    app_with_update(truenas_api)
+    truenas_api.responses["app.upgrade"] = 9429
+    truenas_api.responses["core.get_jobs"] = jobs(
+        {"id": 9429, "method": "app.upgrade", "state": "RUNNING"}
+    )
+    await setup()
+    entity = hass.data["update"].get_entity(APP_UPDATE)
+    coordinator = next(iter(hass.data["truenas"].values()))
+    await hass.services.async_call(
+        "update", "install", {"entity_id": APP_UPDATE}, blocking=True
+    )
+    truenas_api.responses["core.get_jobs"].store.clear()
+    await coordinator.async_refresh()
+    assert entity.in_progress is False
+
+
+async def test_an_error_reply_to_app_upgrade_is_not_an_upgrade_in_progress(
+    hass, truenas_api, setup
+):
+    """No job id came back (the method failed): nothing is upgrading."""
+    app_with_update(truenas_api)
+    # app.upgrade absent from the responses: the fake answers with a JSON-RPC error, as TrueNAS does
+    await setup()
+    entity = hass.data["update"].get_entity(APP_UPDATE)
+    await hass.services.async_call(
+        "update", "install", {"entity_id": APP_UPDATE}, blocking=True
+    )
+    assert entity.in_progress is False
