@@ -269,7 +269,33 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
     # ---------------------------
     #   get_updatecheck
     # ---------------------------
+    @property
+    def new_update_api(self) -> bool:
+        """TrueNAS 25.10 replaced `update.check_available` with `update.status`,
+        and installing moved from `update.update` (now the update configuration)
+        to `update.run`."""
+        return (self._version_major, self._version_minor) >= (25, 10)
+
     def get_updatecheck(self) -> None:
+        if self.new_update_api:
+            status = self.api.query("update.status")
+            if not self.api.connected():
+                return
+
+            new = None
+            if isinstance(status, dict):
+                new = (status.get("status") or {}).get("new_version")
+            self.ds["system_info"]["update_available"] = bool(new)
+            self.ds["system_info"]["update_status"] = (
+                "AVAILABLE" if new else "UNAVAILABLE"
+            )
+            self.ds["system_info"]["update_version"] = (
+                new.get("version", "unknown")
+                if new
+                else self.ds["system_info"]["version"]
+            )
+            return
+
         self.ds["system_info"] = parse_api(
             data=self.ds["system_info"],
             source=self.api.query("update.check_available"),
