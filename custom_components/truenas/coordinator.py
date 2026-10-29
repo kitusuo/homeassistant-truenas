@@ -346,9 +346,14 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
         if self._is_virtual:
             tmp_graphs.remove({"name": "cputemp"})
 
-        for tmp in tmp_graphs:
-            if tmp["name"] in self._systemstats_errored:
-                tmp_graphs.remove(tmp)
+        # graphs TrueNAS could not serve are left out (by name AND identifier: every
+        # interface graph is named "interface"); a new list, not a remove() while
+        # iterating, which skipped the element after each removal
+        tmp_graphs = [
+            tmp
+            for tmp in tmp_graphs
+            if (tmp["name"], tmp.get("identifier")) not in self._systemstats_errored
+        ]
 
         if not tmp_graphs:
             return
@@ -370,30 +375,33 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
         )
 
         if not isinstance(tmp_graph, list):
-            if self.api.error == 500:
-                for tmp in tmp_params["graphs"]:
-                    tmp_params2 = {
-                        [tmp],
-                        {
-                            "start": report_epoch - 30,
-                            "end": report_epoch - 90,
-                            "aggregate": "true",
-                        },
-                    }
+            # The batch failed: TrueNAS answers one JSON-RPC error when a single graph
+            # cannot be served. Ask each graph on its own and set aside the ones that
+            # still fail; read the rest. (This waited for api.error == 500, which the
+            # websocket client never reports, so one bad graph left every statistic
+            # unread.) A batch that failed for a reason that has passed sets nothing
+            # aside and is read on the next poll — no endless re-run.
+            if not self.api.connected():
+                return
 
-                    tmp2 = self.api.query(
-                        reporting_path,
-                        params=tmp_params2,
-                    )
-                    if not isinstance(tmp2, list) and self.api.error == 500:
-                        self._systemstats_errored.append(tmp["name"])
+            failed = []
+            for tmp in tmp_graphs:
+                tmp2 = self.api.query(reporting_path, params=[[tmp], tmp_params[1]])
+                if not self.api.connected():
+                    return
 
+                if not isinstance(tmp2, list):
+                    failed.append((tmp["name"], tmp.get("identifier")))
+
+            if failed:
+                self._systemstats_errored.extend(failed)
                 _LOGGER.warning(
                     "TrueNAS %s fetching following graphs failed, check your NAS: %s",
                     self.host,
-                    self._systemstats_errored,
+                    ", ".join(n if i in (None, n) else f"{n} ({i})" for n, i in failed),
                 )
-                self.get_systemstats()
+                if len(failed) < len(tmp_graphs):
+                    self.get_systemstats()
 
             return
 
