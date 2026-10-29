@@ -1,0 +1,5502 @@
+{
+ "app.query": [
+  {
+   "custom_app": false,
+   "human_version": "1.0.0_1.3.22",
+   "id": "app1",
+   "image_updates_available": false,
+   "latest_version": "1.3.22",
+   "name": "app1",
+   "portals": {
+    "Web UI": "http://192.0.2.10:8080/"
+   },
+   "state": "RUNNING",
+   "upgrade_available": false,
+   "version": "1.3.22"
+  }
+ ],
+ "boot.get_state": {
+  "allocated": 2734164750,
+  "autotrim": {
+   "parsed": "off",
+   "source": "DEFAULT",
+   "value": "off"
+  },
+  "free": 21597898723,
+  "healthy": true,
+  "name": "pool4",
+  "path": "path-1",
+  "scan": {
+   "end_time": {
+    "$date": 1778099247000
+   },
+   "function": "SCRUB",
+   "start_time": {
+    "$date": 1778099241000
+   },
+   "state": "FINISHED",
+   "total_secs_left": null
+  },
+  "size": 24332063473,
+  "status": "ONLINE"
+ },
+ "cloudsync.query": [
+  {
+   "description": "task1",
+   "direction": "PUSH",
+   "enabled": true,
+   "encryption_password": "",
+   "encryption_salt": "",
+   "id": 1,
+   "job": {
+    "description": null,
+    "error": null,
+    "id": 7660,
+    "method": "cloudsync.sync",
+    "progress": {
+     "description": "description-1",
+     "percent": 100
+    },
+    "result": null,
+    "state": "SUCCESS",
+    "time_finished": {
+     "$date": 1778265827000
+    },
+    "time_started": {
+     "$date": 1778265740000
+    }
+   },
+   "path": "path-2",
+   "snapshot": false,
+   "transfer_mode": "SYNC"
+  },
+  {
+   "description": "task2",
+   "direction": "PUSH",
+   "enabled": true,
+   "encryption_password": "",
+   "encryption_salt": "",
+   "id": 2,
+   "job": {
+    "description": null,
+    "error": null,
+    "id": 7723,
+    "method": "cloudsync.sync",
+    "progress": {
+     "description": "description-2",
+     "percent": 100
+    },
+    "result": null,
+    "state": "SUCCESS",
+    "time_finished": {
+     "$date": 1778267542000
+    },
+    "time_started": {
+     "$date": 1778267540000
+    }
+   },
+   "path": "path-3",
+   "snapshot": false,
+   "transfer_mode": "SYNC"
+  }
+ ],
+ "core.get_jobs": [
+  {
+   "description": null,
+   "error": null,
+   "id": 3944,
+   "method": "app.upgrade",
+   "progress": {
+    "description": "description-3",
+    "percent": 100
+   },
+   "result": {
+    "custom_app": false,
+    "human_version": "1.0.0_1.3.21",
+    "id": "app1",
+    "image_updates_available": false,
+    "latest_version": "1.3.21",
+    "name": "app1",
+    "portals": {
+     "Web UI": "http://192.0.2.10:8080/"
+    },
+    "state": "DEPLOYING",
+    "upgrade_available": false,
+    "version": "1.3.21"
+   },
+   "state": "SUCCESS",
+   "time_finished": {
+    "$date": 1778156958000
+   },
+   "time_started": {
+    "$date": 1778156936000
+   }
+  },
+  {
+   "description": null,
+   "error": null,
+   "id": 9429,
+   "method": "app.upgrade",
+   "progress": {
+    "description": "description-3",
+    "percent": 100
+   },
+   "result": {
+    "custom_app": false,
+    "human_version": "1.0.0_1.3.22",
+    "id": "app1",
+    "image_updates_available": false,
+    "latest_version": "1.3.22",
+    "name": "app1",
+    "portals": {
+     "Web UI": "http://192.0.2.10:8080/"
+    },
+    "state": "DEPLOYING",
+    "upgrade_available": false,
+    "version": "1.3.22"
+   },
+   "state": "SUCCESS",
+   "time_finished": {
+    "$date": 1778317439000
+   },
+   "time_started": {
+    "$date": 1778317417000
+   }
+  }
+ ],
+ "disk.query": [
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sda",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-1",
+   "model": "model-1",
+   "name": "sda",
+   "pool": null,
+   "rotationrate": null,
+   "serial": "serial-1",
+   "size": 25116968747,
+   "type": "SSD",
+   "zfs_guid": null
+  },
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sdc",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-2",
+   "model": "model-2",
+   "name": "sdc",
+   "pool": null,
+   "rotationrate": 5400,
+   "serial": "serial-2",
+   "size": 2924575318941,
+   "type": "HDD",
+   "zfs_guid": "zfs_guid-1"
+  },
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sdg",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-3",
+   "model": "model-2",
+   "name": "sdg",
+   "pool": null,
+   "rotationrate": 5400,
+   "serial": "serial-3",
+   "size": 2924575318941,
+   "type": "HDD",
+   "zfs_guid": "zfs_guid-2"
+  },
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sdb",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-4",
+   "model": "model-3",
+   "name": "sdb",
+   "pool": null,
+   "rotationrate": 7200,
+   "serial": "serial-4",
+   "size": 11696658383372,
+   "type": "HDD",
+   "zfs_guid": "zfs_guid-3"
+  },
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sdf",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-5",
+   "model": "model-2",
+   "name": "sdf",
+   "pool": null,
+   "rotationrate": 5400,
+   "serial": "serial-5",
+   "size": 2924575318941,
+   "type": "HDD",
+   "zfs_guid": "zfs_guid-4"
+  },
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sdi",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-6",
+   "model": "model-2",
+   "name": "sdi",
+   "pool": null,
+   "rotationrate": 5400,
+   "serial": "serial-6",
+   "size": 2924575318941,
+   "type": "HDD",
+   "zfs_guid": "zfs_guid-5"
+  },
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sdd",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-7",
+   "model": "model-2",
+   "name": "sdd",
+   "pool": null,
+   "rotationrate": 5400,
+   "serial": "serial-7",
+   "size": 2924575318941,
+   "type": "HDD",
+   "zfs_guid": null
+  },
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sde",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-8",
+   "model": "model-3",
+   "name": "sde",
+   "pool": null,
+   "rotationrate": 7200,
+   "serial": "serial-8",
+   "size": 11696658383372,
+   "type": "HDD",
+   "zfs_guid": "zfs_guid-6"
+  },
+  {
+   "advpowermgmt": "DISABLED",
+   "description": "",
+   "devname": "sdh",
+   "hddstandby": "ALWAYS ON",
+   "identifier": "identifier-9",
+   "model": "model-4",
+   "name": "sdh",
+   "pool": null,
+   "rotationrate": 5400,
+   "serial": "serial-9",
+   "size": 2924575318941,
+   "type": "HDD",
+   "zfs_guid": null
+  }
+ ],
+ "disk.temperatures": {
+  "sda": null,
+  "sdb": 25.0,
+  "sdc": 21.0,
+  "sdd": 20.0,
+  "sde": 24.0,
+  "sdf": 20.0,
+  "sdg": 21.0,
+  "sdh": 20.0,
+  "sdi": 21.0
+ },
+ "interface.query": [
+  {
+   "description": "",
+   "id": "eth1",
+   "mtu": null,
+   "name": "eth1",
+   "state": {
+    "active_media_subtype": "Unknown Other",
+    "active_media_type": "Ethernet",
+    "description": "eth1",
+    "link_address": "link_address-1",
+    "link_state": "LINK_STATE_UP",
+    "mtu": 1500,
+    "name": "eth1"
+   },
+   "type": "PHYSICAL"
+  },
+  {
+   "description": "",
+   "id": "eth2",
+   "mtu": null,
+   "name": "eth2",
+   "state": {
+    "active_media_subtype": "Unknown Other",
+    "active_media_type": "Ethernet",
+    "description": "eth2",
+    "link_address": "link_address-2",
+    "link_state": "LINK_STATE_UP",
+    "mtu": 1500,
+    "name": "eth2"
+   },
+   "type": "PHYSICAL"
+  },
+  {
+   "description": "",
+   "id": "eth3",
+   "mtu": null,
+   "name": "eth3",
+   "state": {
+    "active_media_subtype": "Unknown Other",
+    "active_media_type": "Ethernet",
+    "description": "eth3",
+    "link_address": "link_address-3",
+    "link_state": "LINK_STATE_UP",
+    "mtu": 1500,
+    "name": "eth3"
+   },
+   "type": "PHYSICAL"
+  },
+  {
+   "description": "",
+   "id": "eth4",
+   "mtu": 9000,
+   "name": "eth4",
+   "state": {
+    "active_media_subtype": "Unknown Other",
+    "active_media_type": "Ethernet",
+    "description": "eth4",
+    "link_address": "link_address-4",
+    "link_state": "LINK_STATE_UP",
+    "mtu": 9000,
+    "name": "eth4"
+   },
+   "type": "PHYSICAL"
+  }
+ ],
+ "pool.dataset.query": [
+  {
+   "atime": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.07",
+    "source": "NONE",
+    "value": "1.07x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool3",
+   "mountpoint": "/mnt/pool3",
+   "name": "pool3",
+   "pool": "pool3",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 410711996219,
+    "source": "NONE",
+    "value": "523.26 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": false,
+    "source": "INHERITED",
+    "value": "OFF"
+   },
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.12",
+    "source": "NONE",
+    "value": "1.12x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool3/ds1",
+   "mountpoint": "/mnt/pool3/ds1",
+   "name": "pool3/ds1",
+   "pool": "pool3",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": true,
+    "source": "LOCAL",
+    "value": "ON"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 220873982930,
+    "source": "NONE",
+    "value": "281.4 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.15",
+    "source": "NONE",
+    "value": "1.15x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "id": "pool3/ds1/ds4",
+   "mountpoint": null,
+   "name": "pool3/ds1/ds4",
+   "pool": "pool3",
+   "readonly": {
+    "parsed": true,
+    "source": "INHERITED",
+    "value": "ON"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 65076244582,
+    "source": "NONE",
+    "value": "82.91 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.11",
+    "source": "NONE",
+    "value": "1.11x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "id": "pool3/ds1/ds5",
+   "mountpoint": null,
+   "name": "pool3/ds1/ds5",
+   "pool": "pool3",
+   "readonly": {
+    "parsed": true,
+    "source": "INHERITED",
+    "value": "ON"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 45070370197,
+    "source": "NONE",
+    "value": "57.42 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.43",
+    "source": "NONE",
+    "value": "1.43x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "id": "pool3/ds1/ds6",
+   "mountpoint": null,
+   "name": "pool3/ds1/ds6",
+   "pool": "pool3",
+   "readonly": {
+    "parsed": true,
+    "source": "INHERITED",
+    "value": "ON"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 11978686144,
+    "source": "NONE",
+    "value": "15.26 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.06",
+    "source": "NONE",
+    "value": "1.06x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "id": "pool3/ds1/ds2",
+   "mountpoint": null,
+   "name": "pool3/ds1/ds2",
+   "pool": "pool3",
+   "readonly": {
+    "parsed": true,
+    "source": "INHERITED",
+    "value": "ON"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 48662408290,
+    "source": "NONE",
+    "value": "62 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.06",
+    "source": "NONE",
+    "value": "1.06x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "id": "pool3/ds1/ds3",
+   "mountpoint": null,
+   "name": "pool3/ds1/ds3",
+   "pool": "pool3",
+   "readonly": {
+    "parsed": true,
+    "source": "INHERITED",
+    "value": "ON"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 50086141972,
+    "source": "NONE",
+    "value": "63.81 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.00",
+    "source": "NONE",
+    "value": "1.00x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool3/ds7",
+   "mountpoint": "path-3",
+   "name": "pool3/ds7",
+   "pool": "pool3",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 171356366114,
+    "source": "NONE",
+    "value": "218.31 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2412199819362,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.20",
+    "source": "NONE",
+    "value": "1.20x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "id": "pool3/ds8",
+   "mountpoint": null,
+   "name": "pool3/ds8",
+   "pool": "pool3",
+   "readonly": {
+    "parsed": true,
+    "source": "LOCAL",
+    "value": "ON"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 18374129307,
+    "source": "NONE",
+    "value": "23.41 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "available": {
+    "parsed": 2456843672182,
+    "source": "NONE",
+    "value": "3.06 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.15",
+    "source": "NONE",
+    "value": "1.15x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool2",
+   "mountpoint": "/mnt/pool2",
+   "name": "pool2",
+   "pool": "pool2",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 366068143398,
+    "source": "NONE",
+    "value": "466.39 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2660924037537,
+    "source": "NONE",
+    "value": "3.31 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.16",
+    "source": "NONE",
+    "value": "1.16x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "id": "pool2/ds4",
+   "mountpoint": null,
+   "name": "pool2/ds4",
+   "pool": "pool2",
+   "readonly": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "LOCAL",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 300153239101,
+    "source": "NONE",
+    "value": "382.41 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2456843672182,
+    "source": "NONE",
+    "value": "3.06 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.00",
+    "source": "NONE",
+    "value": "1.00x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "id": "pool2/ds3",
+   "mountpoint": null,
+   "name": "pool2/ds3",
+   "pool": "pool2",
+   "readonly": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 2887472549,
+    "source": "NONE",
+    "value": "3.68 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2456843672182,
+    "source": "NONE",
+    "value": "3.06 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.06",
+    "source": "NONE",
+    "value": "1.06x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "id": "pool2/ds2",
+   "mountpoint": null,
+   "name": "pool2/ds2",
+   "pool": "pool2",
+   "readonly": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 48387869298,
+    "source": "NONE",
+    "value": "61.65 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2456843672182,
+    "source": "NONE",
+    "value": "3.06 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.47",
+    "source": "NONE",
+    "value": "1.47x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "id": "pool2/ds6",
+   "mountpoint": null,
+   "name": "pool2/ds6",
+   "pool": "pool2",
+   "readonly": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 14461471854,
+    "source": "NONE",
+    "value": "18.42 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2456843672182,
+    "source": "NONE",
+    "value": "3.06 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.77",
+    "source": "NONE",
+    "value": "1.77x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "id": "pool2/ds5",
+   "mountpoint": null,
+   "name": "pool2/ds5",
+   "pool": "pool2",
+   "readonly": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 9134080,
+    "source": "NONE",
+    "value": "8.71 MiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "RECEIVED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.02",
+    "source": "NONE",
+    "value": "1.02x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1",
+   "mountpoint": "path-2",
+   "name": "pool1",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 9183101032501,
+    "source": "NONE",
+    "value": "11.43 TiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "RECEIVED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.64",
+    "source": "NONE",
+    "value": "1.64x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11",
+   "mountpoint": "/mnt/pool1/ds11",
+   "name": "pool1/ds11",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 18115381600,
+    "source": "NONE",
+    "value": "23.08 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.97",
+    "source": "NONE",
+    "value": "1.97x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds18",
+   "mountpoint": "/mnt/pool1/ds11/ds18",
+   "name": "pool1/ds11/ds18",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 1231750111,
+    "source": "NONE",
+    "value": "1.57 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.97",
+    "source": "NONE",
+    "value": "1.97x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds18/ds13",
+   "mountpoint": "/mnt/pool1/ds11/ds18/ds13",
+   "name": "pool1/ds11/ds18/ds13",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 1231678251,
+    "source": "NONE",
+    "value": "1.57 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.97",
+    "source": "NONE",
+    "value": "1.97x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds18/ds13/ds4",
+   "mountpoint": "/mnt/pool1/ds11/ds18/ds13/ds4",
+   "name": "pool1/ds11/ds18/ds13/ds4",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 1231606390,
+    "source": "NONE",
+    "value": "1.57 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.00",
+    "source": "NONE",
+    "value": "1.00x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds14",
+   "mountpoint": "/mnt/pool1/ds11/ds14",
+   "name": "pool1/ds11/ds14",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 98304,
+    "source": "NONE",
+    "value": "96 KiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.00",
+    "source": "NONE",
+    "value": "1.00x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds12",
+   "mountpoint": "/mnt/pool1/ds11/ds12",
+   "name": "pool1/ds11/ds12",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 340135399,
+    "source": "NONE",
+    "value": "443.75 MiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.00",
+    "source": "NONE",
+    "value": "1.00x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds12/ds13",
+   "mountpoint": "/mnt/pool1/ds11/ds12/ds13",
+   "name": "pool1/ds11/ds12/ds13",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 340063539,
+    "source": "NONE",
+    "value": "443.65 MiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.42",
+    "source": "NONE",
+    "value": "1.42x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds15",
+   "mountpoint": "/mnt/pool1/ds11/ds15",
+   "name": "pool1/ds11/ds15",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 3818493612,
+    "source": "NONE",
+    "value": "4.86 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.42",
+    "source": "NONE",
+    "value": "1.42x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds15/ds16",
+   "mountpoint": "/mnt/pool1/ds11/ds15/ds16",
+   "name": "pool1/ds11/ds15/ds16",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 3818421751,
+    "source": "NONE",
+    "value": "4.86 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.42",
+    "source": "NONE",
+    "value": "1.42x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds15/ds16/ds4",
+   "mountpoint": "/mnt/pool1/ds11/ds15/ds16/ds4",
+   "name": "pool1/ds11/ds15/ds16/ds4",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 3818191200,
+    "source": "NONE",
+    "value": "4.86 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.00",
+    "source": "NONE",
+    "value": "1.00x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds19",
+   "mountpoint": "/mnt/pool1/ds11/ds19",
+   "name": "pool1/ds11/ds19",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 98304,
+    "source": "NONE",
+    "value": "96 KiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "LOCAL",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.93",
+    "source": "NONE",
+    "value": "1.93x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds11/ds17",
+   "mountpoint": "/mnt/pool1/ds11/ds17",
+   "name": "pool1/ds11/ds17",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 102400,
+    "source": "NONE",
+    "value": "100 KiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.07",
+    "source": "NONE",
+    "value": "1.07x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "RECEIVED",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "aes-256-gcm",
+    "source": "NONE",
+    "value": "AES-256-GCM"
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds20",
+   "mountpoint": "/mnt/pool1/ds20",
+   "name": "pool1/ds20",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "RECEIVED",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 7057066233,
+    "source": "NONE",
+    "value": "8.99 GiB"
+   }
+  },
+  {
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.20",
+    "source": "NONE",
+    "value": "1.20x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "id": "pool1/ds8",
+   "mountpoint": null,
+   "name": "pool1/ds8",
+   "pool": "pool1",
+   "readonly": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "LOCAL",
+    "value": "STANDARD"
+   },
+   "type": "VOLUME",
+   "used": {
+    "parsed": 18289732468,
+    "source": "NONE",
+    "value": "23.3 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.18",
+    "source": "NONE",
+    "value": "1.18x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds9",
+   "mountpoint": "/mnt/pool1/ds9",
+   "name": "pool1/ds9",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 2665984368,
+    "source": "NONE",
+    "value": "3.4 GiB"
+   }
+  },
+  {
+   "atime": {
+    "parsed": false,
+    "source": "LOCAL",
+    "value": "OFF"
+   },
+   "available": {
+    "parsed": 2408380044242,
+    "source": "NONE",
+    "value": "3 TiB"
+   },
+   "casesensitivity": {
+    "parsed": "sensitive",
+    "source": "NONE",
+    "value": "SENSITIVE"
+   },
+   "checksum": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "compression": {
+    "parsed": "lz4",
+    "source": "INHERITED",
+    "value": "LZ4"
+   },
+   "compressratio": {
+    "parsed": "1.18",
+    "source": "NONE",
+    "value": "1.18x"
+   },
+   "copies": {
+    "parsed": 1,
+    "source": "DEFAULT",
+    "value": "1"
+   },
+   "deduplication": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "encryption_algorithm": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": null
+   },
+   "exec": {
+    "parsed": true,
+    "source": "DEFAULT",
+    "value": "ON"
+   },
+   "id": "pool1/ds9/ds10",
+   "mountpoint": "/mnt/pool1/ds9/ds10",
+   "name": "pool1/ds9/ds10",
+   "pool": "pool1",
+   "quota": {
+    "parsed": null,
+    "source": "DEFAULT",
+    "value": null
+   },
+   "readonly": {
+    "parsed": false,
+    "source": "DEFAULT",
+    "value": "OFF"
+   },
+   "recordsize": {
+    "parsed": 131072,
+    "source": "DEFAULT",
+    "value": "128K"
+   },
+   "sync": {
+    "parsed": "standard",
+    "source": "DEFAULT",
+    "value": "STANDARD"
+   },
+   "type": "FILESYSTEM",
+   "used": {
+    "parsed": 2665912508,
+    "source": "NONE",
+    "value": "3.4 GiB"
+   }
+  }
+ ],
+ "pool.query": [
+  {
+   "allocated": 9183101388808,
+   "autotrim": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "off"
+   },
+   "free": 2508847562924,
+   "guid": "guid-1",
+   "healthy": true,
+   "id": 1,
+   "name": "pool1",
+   "path": "path-2",
+   "scan": {
+    "end_time": {
+     "$date": 1777257884000
+    },
+    "function": "SCRUB",
+    "start_time": {
+     "$date": 1777167024000
+    },
+    "state": "FINISHED",
+    "total_secs_left": null
+   },
+   "size": 11691948951732,
+   "status": "ONLINE"
+  },
+  {
+   "allocated": 161987810979,
+   "autotrim": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "off"
+   },
+   "free": 2751580563673,
+   "guid": "guid-2",
+   "healthy": true,
+   "id": 2,
+   "name": "pool2",
+   "path": "path-4",
+   "scan": {
+    "end_time": {
+     "$date": 1777123096000
+    },
+    "function": "SCRUB",
+    "start_time": {
+     "$date": 1777120590000
+    },
+    "state": "FINISHED",
+    "total_secs_left": null
+   },
+   "size": 2913568374652,
+   "status": "ONLINE"
+  },
+  {
+   "allocated": 410712008196,
+   "autotrim": {
+    "parsed": "off",
+    "source": "DEFAULT",
+    "value": "off"
+   },
+   "free": 2502856366456,
+   "guid": "guid-3",
+   "healthy": true,
+   "id": 3,
+   "name": "pool3",
+   "path": "path-5",
+   "scan": {
+    "end_time": {
+     "$date": 1777123156000
+    },
+    "function": "SCRUB",
+    "start_time": {
+     "$date": 1777120590000
+    },
+    "state": "FINISHED",
+    "total_secs_left": null
+   },
+   "size": 2913568374652,
+   "status": "ONLINE"
+  }
+ ],
+ "pool.snapshottask.query": [
+  {
+   "allow_empty": true,
+   "dataset": "pool1",
+   "enabled": true,
+   "id": 1,
+   "lifetime_unit": "WEEK",
+   "lifetime_value": 4,
+   "naming_schema": "naming_schema-1",
+   "recursive": false,
+   "state": {
+    "datetime": {
+     "$date": 1778258540000
+    },
+    "state": "FINISHED"
+   },
+   "vmware_sync": false
+  },
+  {
+   "allow_empty": true,
+   "dataset": "pool2",
+   "enabled": true,
+   "id": 2,
+   "lifetime_unit": "WEEK",
+   "lifetime_value": 2,
+   "naming_schema": "naming_schema-1",
+   "recursive": true,
+   "state": {
+    "datetime": {
+     "$date": 1778258539000
+    },
+    "state": "FINISHED"
+   },
+   "vmware_sync": false
+  },
+  {
+   "allow_empty": true,
+   "dataset": "pool1/ds8",
+   "enabled": true,
+   "id": 3,
+   "lifetime_unit": "WEEK",
+   "lifetime_value": 2,
+   "naming_schema": "naming_schema-1",
+   "recursive": true,
+   "state": {
+    "datetime": {
+     "$date": 1778258539000
+    },
+    "state": "FINISHED"
+   },
+   "vmware_sync": false
+  },
+  {
+   "allow_empty": true,
+   "dataset": "pool1/ds8",
+   "enabled": true,
+   "id": 4,
+   "lifetime_unit": "WEEK",
+   "lifetime_value": 2,
+   "naming_schema": "naming_schema-1",
+   "recursive": false,
+   "state": {
+    "datetime": {
+     "$date": 1778258540000
+    },
+    "state": "FINISHED"
+   },
+   "vmware_sync": false
+  }
+ ],
+ "replication.query": [
+  {
+   "auto": true,
+   "compression": null,
+   "direction": "PUSH",
+   "enabled": true,
+   "id": 1,
+   "job": {
+    "description": null,
+    "error": null,
+    "id": 7413,
+    "method": "replication.run",
+    "progress": {
+     "description": "description-4",
+     "percent": 100
+    },
+    "result": null,
+    "state": "SUCCESS",
+    "time_finished": {
+     "$date": 1778258543000
+    },
+    "time_started": {
+     "$date": 1778258540000
+    }
+   },
+   "lifetime_unit": null,
+   "lifetime_value": null,
+   "name": "task3",
+   "naming_schema": [],
+   "properties": false,
+   "readonly": "SET",
+   "recursive": true,
+   "retention_policy": "SOURCE",
+   "source_datasets": [
+    "pool2"
+   ],
+   "state": {
+    "datetime": {
+     "$date": 1778258543000
+    },
+    "state": "FINISHED"
+   },
+   "target_dataset": "pool3/ds1",
+   "transport": "LOCAL"
+  },
+  {
+   "auto": true,
+   "compression": null,
+   "direction": "PUSH",
+   "enabled": true,
+   "id": 2,
+   "job": {
+    "description": null,
+    "error": null,
+    "id": 7414,
+    "method": "replication.run",
+    "progress": {
+     "description": "description-5",
+     "percent": 100
+    },
+    "result": null,
+    "state": "SUCCESS",
+    "time_finished": {
+     "$date": 1778258541000
+    },
+    "time_started": {
+     "$date": 1778258540000
+    }
+   },
+   "lifetime_unit": null,
+   "lifetime_value": null,
+   "name": "task4",
+   "naming_schema": [],
+   "properties": false,
+   "readonly": "SET",
+   "recursive": false,
+   "retention_policy": "SOURCE",
+   "source_datasets": [
+    "pool1/ds8"
+   ],
+   "state": {
+    "datetime": {
+     "$date": 1778258541000
+    },
+    "state": "FINISHED"
+   },
+   "target_dataset": "pool3/ds8",
+   "transport": "LOCAL"
+  }
+ ],
+ "reporting.netdata_get_data": [
+  {
+   "aggregations": {
+    "max": {
+     "longterm": 0.01,
+     "midterm": 0.06,
+     "shortterm": 0.13
+    },
+    "mean": {
+     "longterm": 0.008333333333333333,
+     "midterm": 0.0525,
+     "shortterm": 0.08064505000000001
+    },
+    "min": {
+     "longterm": 0,
+     "midterm": 0.05,
+     "shortterm": 0.0488702
+    }
+   },
+   "data": [
+    [
+     1778336779,
+     0.13,
+     0.06,
+     0.01
+    ],
+    [
+     1778336784,
+     0.12,
+     0.06,
+     0.01
+    ],
+    [
+     1778336789,
+     0.1,
+     0.06,
+     0.01
+    ],
+    [
+     1778336794,
+     0.09,
+     0.05,
+     0.01
+    ],
+    [
+     1778336799,
+     0.0888704,
+     0.05,
+     0.01
+    ],
+    [
+     1778336804,
+     0.08,
+     0.05,
+     0.01
+    ],
+    [
+     1778336809,
+     0.08,
+     0.05,
+     0.01
+    ],
+    [
+     1778336814,
+     0.07,
+     0.05,
+     0.01
+    ],
+    [
+     1778336819,
+     0.06,
+     0.05,
+     0.01
+    ],
+    [
+     1778336824,
+     0.05,
+     0.05,
+     0.01
+    ],
+    [
+     1778336829,
+     0.05,
+     0.05,
+     0
+    ],
+    [
+     1778336834,
+     0.0488702,
+     0.05,
+     0
+    ]
+   ],
+   "end": 1778336776,
+   "identifier": "load",
+   "legend": [
+    "time",
+    "shortterm",
+    "midterm",
+    "longterm"
+   ],
+   "name": "load",
+   "start": 1778336836
+  },
+  {
+   "aggregations": {
+    "max": {
+     "cpu": 16,
+     "cpu0": 10,
+     "cpu1": 56,
+     "cpu2": 7,
+     "cpu3": 6
+    },
+    "mean": {
+     "cpu": 0.5737704918032787,
+     "cpu0": 0.5737704918032787,
+     "cpu1": 1.2950819672131149,
+     "cpu2": 0.6229508196721312,
+     "cpu3": 0.47540983606557374
+    },
+    "min": {
+     "cpu": 0,
+     "cpu0": 0,
+     "cpu1": 0,
+     "cpu2": 0,
+     "cpu3": 0
+    }
+   },
+   "data": [
+    [
+     1778336776,
+     6,
+     10,
+     5,
+     7,
+     4
+    ],
+    [
+     1778336777,
+     16,
+     3,
+     56,
+     1,
+     3
+    ],
+    [
+     1778336778,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336779,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     1778336780,
+     0,
+     0,
+     0,
+     2,
+     0
+    ],
+    [
+     1778336781,
+     2,
+     1,
+     2,
+     0,
+     3
+    ],
+    [
+     1778336782,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336783,
+     0,
+     1,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336784,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     1778336785,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336786,
+     0,
+     0,
+     0,
+     1,
+     1
+    ],
+    [
+     1778336787,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336788,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336789,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     1778336790,
+     0,
+     1,
+     0,
+     0,
+     1
+    ],
+    [
+     1778336791,
+     6,
+     8,
+     4,
+     6,
+     6
+    ],
+    [
+     1778336792,
+     2,
+     1,
+     2,
+     5,
+     2
+    ],
+    [
+     1778336793,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336794,
+     0,
+     0,
+     1,
+     0,
+     1
+    ],
+    [
+     1778336795,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336796,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336797,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336798,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    [
+     1778336799,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336800,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336801,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336802,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336803,
+     0,
+     0,
+     0,
+     0,
+     1
+    ],
+    [
+     1778336804,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336805,
+     0,
+     1,
+     0,
+     0,
+     1
+    ],
+    [
+     1778336806,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336807,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336808,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336809,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336810,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336811,
+     2,
+     1,
+     4,
+     2,
+     1
+    ],
+    [
+     1778336812,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336813,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336814,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336815,
+     0,
+     0,
+     0,
+     1,
+     1
+    ],
+    [
+     1778336816,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336817,
+     0,
+     1,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336818,
+     0,
+     0,
+     0,
+     0,
+     1
+    ],
+    [
+     1778336819,
+     0,
+     0,
+     1,
+     1,
+     1
+    ],
+    [
+     1778336820,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336821,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336822,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336823,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336824,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336825,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336826,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336827,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336828,
+     0,
+     1,
+     0,
+     0,
+     1
+    ],
+    [
+     1778336829,
+     1,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336830,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336831,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336832,
+     0,
+     0,
+     0,
+     0,
+     1
+    ],
+    [
+     1778336833,
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    [
+     1778336834,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336835,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    [
+     1778336836,
+     0,
+     0,
+     0,
+     1,
+     0
+    ]
+   ],
+   "end": 1778336776,
+   "identifier": "cpu",
+   "legend": [
+    "time",
+    "cpu",
+    "cpu0",
+    "cpu1",
+    "cpu2",
+    "cpu3"
+   ],
+   "name": "cpu",
+   "start": 1778336836
+  },
+  {
+   "aggregations": {
+    "max": {
+     "size": 32125125420
+    },
+    "mean": {
+     "size": 32125036501.639343
+    },
+    "min": {
+     "size": 32125023080
+    }
+   },
+   "data": [
+    [
+     1778336776,
+     32125125420.0
+    ],
+    [
+     1778336777,
+     32125125420.0
+    ],
+    [
+     1778336778,
+     32125125420.0
+    ],
+    [
+     1778336779,
+     32125125420.0
+    ],
+    [
+     1778336780,
+     32125125420.0
+    ],
+    [
+     1778336781,
+     32125125420.0
+    ],
+    [
+     1778336782,
+     32125125420.0
+    ],
+    [
+     1778336783,
+     32125125420.0
+    ],
+    [
+     1778336784,
+     32125023080.0
+    ],
+    [
+     1778336785,
+     32125023080.0
+    ],
+    [
+     1778336786,
+     32125023080.0
+    ],
+    [
+     1778336787,
+     32125023080.0
+    ],
+    [
+     1778336788,
+     32125023080.0
+    ],
+    [
+     1778336789,
+     32125023080.0
+    ],
+    [
+     1778336790,
+     32125023080.0
+    ],
+    [
+     1778336791,
+     32125023080.0
+    ],
+    [
+     1778336792,
+     32125023080.0
+    ],
+    [
+     1778336793,
+     32125023080.0
+    ],
+    [
+     1778336794,
+     32125023080.0
+    ],
+    [
+     1778336795,
+     32125023080.0
+    ],
+    [
+     1778336796,
+     32125023080.0
+    ],
+    [
+     1778336797,
+     32125023080.0
+    ],
+    [
+     1778336798,
+     32125023080.0
+    ],
+    [
+     1778336799,
+     32125023080.0
+    ],
+    [
+     1778336800,
+     32125023080.0
+    ],
+    [
+     1778336801,
+     32125023080.0
+    ],
+    [
+     1778336802,
+     32125023080.0
+    ],
+    [
+     1778336803,
+     32125023080.0
+    ],
+    [
+     1778336804,
+     32125023080.0
+    ],
+    [
+     1778336805,
+     32125023080.0
+    ],
+    [
+     1778336806,
+     32125023080.0
+    ],
+    [
+     1778336807,
+     32125023080.0
+    ],
+    [
+     1778336808,
+     32125023080.0
+    ],
+    [
+     1778336809,
+     32125023080.0
+    ],
+    [
+     1778336810,
+     32125023080.0
+    ],
+    [
+     1778336811,
+     32125023080.0
+    ],
+    [
+     1778336812,
+     32125023080.0
+    ],
+    [
+     1778336813,
+     32125023080.0
+    ],
+    [
+     1778336814,
+     32125023080.0
+    ],
+    [
+     1778336815,
+     32125023080.0
+    ],
+    [
+     1778336816,
+     32125023080.0
+    ],
+    [
+     1778336817,
+     32125023080.0
+    ],
+    [
+     1778336818,
+     32125023080.0
+    ],
+    [
+     1778336819,
+     32125023080.0
+    ],
+    [
+     1778336820,
+     32125023080.0
+    ],
+    [
+     1778336821,
+     32125023080.0
+    ],
+    [
+     1778336822,
+     32125023080.0
+    ],
+    [
+     1778336823,
+     32125023080.0
+    ],
+    [
+     1778336824,
+     32125023080.0
+    ],
+    [
+     1778336825,
+     32125023080.0
+    ],
+    [
+     1778336826,
+     32125023080.0
+    ],
+    [
+     1778336827,
+     32125023080.0
+    ],
+    [
+     1778336828,
+     32125023080.0
+    ],
+    [
+     1778336829,
+     32125023080.0
+    ],
+    [
+     1778336830,
+     32125023080.0
+    ],
+    [
+     1778336831,
+     32125023080.0
+    ],
+    [
+     1778336832,
+     32125023080.0
+    ],
+    [
+     1778336833,
+     32125023080.0
+    ],
+    [
+     1778336834,
+     32125023080.0
+    ],
+    [
+     1778336835,
+     32125023080.0
+    ],
+    [
+     1778336836,
+     32125023080.0
+    ]
+   ],
+   "end": 1778336776,
+   "identifier": "arcsize",
+   "legend": [
+    "time",
+    "size"
+   ],
+   "name": "arcsize",
+   "start": 1778336836
+  },
+  {
+   "aggregations": {
+    "max": {
+     "available": 2501828494
+    },
+    "mean": {
+     "available": 2496039573.180328
+    },
+    "min": {
+     "available": 2490828406
+    }
+   },
+   "data": [
+    [
+     1778336776,
+     2501828494.0
+    ],
+    [
+     1778336777,
+     2498642796.0
+    ],
+    [
+     1778336778,
+     2498642796.0
+    ],
+    [
+     1778336779,
+     2498642796.0
+    ],
+    [
+     1778336780,
+     2498642796.0
+    ],
+    [
+     1778336781,
+     2498409607.0
+    ],
+    [
+     1778336782,
+     2498409607.0
+    ],
+    [
+     1778336783,
+     2498409607.0
+    ],
+    [
+     1778336784,
+     2498041183.0
+    ],
+    [
+     1778336785,
+     2498041183.0
+    ],
+    [
+     1778336786,
+     2498041183.0
+    ],
+    [
+     1778336787,
+     2498041183.0
+    ],
+    [
+     1778336788,
+     2498041183.0
+    ],
+    [
+     1778336789,
+     2498041183.0
+    ],
+    [
+     1778336790,
+     2498041183.0
+    ],
+    [
+     1778336791,
+     2498759756.0
+    ],
+    [
+     1778336792,
+     2500924247.0
+    ],
+    [
+     1778336793,
+     2500924247.0
+    ],
+    [
+     1778336794,
+     2500924247.0
+    ],
+    [
+     1778336795,
+     2500924247.0
+    ],
+    [
+     1778336796,
+     2500924247.0
+    ],
+    [
+     1778336797,
+     2500924247.0
+    ],
+    [
+     1778336798,
+     2500924247.0
+    ],
+    [
+     1778336799,
+     2500924247.0
+    ],
+    [
+     1778336800,
+     2500756848.0
+    ],
+    [
+     1778336801,
+     2500756848.0
+    ],
+    [
+     1778336802,
+     2500756848.0
+    ],
+    [
+     1778336803,
+     2500756848.0
+    ],
+    [
+     1778336804,
+     2500756848.0
+    ],
+    [
+     1778336805,
+     2500756848.0
+    ],
+    [
+     1778336806,
+     2500756848.0
+    ],
+    [
+     1778336807,
+     2500756848.0
+    ],
+    [
+     1778336808,
+     2500756848.0
+    ],
+    [
+     1778336809,
+     2500756848.0
+    ],
+    [
+     1778336810,
+     2500756848.0
+    ],
+    [
+     1778336811,
+     2491795519.0
+    ],
+    [
+     1778336812,
+     2491720226.0
+    ],
+    [
+     1778336813,
+     2491720226.0
+    ],
+    [
+     1778336814,
+     2491720226.0
+    ],
+    [
+     1778336815,
+     2491163204.0
+    ],
+    [
+     1778336816,
+     2490995805.0
+    ],
+    [
+     1778336817,
+     2490995805.0
+    ],
+    [
+     1778336818,
+     2490995805.0
+    ],
+    [
+     1778336819,
+     2490828406.0
+    ],
+    [
+     1778336820,
+     2490828406.0
+    ],
+    [
+     1778336821,
+     2490828406.0
+    ],
+    [
+     1778336822,
+     2490828406.0
+    ],
+    [
+     1778336823,
+     2490828406.0
+    ],
+    [
+     1778336824,
+     2490828406.0
+    ],
+    [
+     1778336825,
+     2490828406.0
+    ],
+    [
+     1778336826,
+     2490828406.0
+    ],
+    [
+     1778336827,
+     2490828406.0
+    ],
+    [
+     1778336828,
+     2490828406.0
+    ],
+    [
+     1778336829,
+     2490828406.0
+    ],
+    [
+     1778336830,
+     2490828406.0
+    ],
+    [
+     1778336831,
+     2490828406.0
+    ],
+    [
+     1778336832,
+     2490828406.0
+    ],
+    [
+     1778336833,
+     2490828406.0
+    ],
+    [
+     1778336834,
+     2490828406.0
+    ],
+    [
+     1778336835,
+     2490828406.0
+    ],
+    [
+     1778336836,
+     2490828406.0
+    ]
+   ],
+   "end": 1778336776,
+   "identifier": "memory",
+   "legend": [
+    "time",
+    "available"
+   ],
+   "name": "memory",
+   "start": 1778336836
+  },
+  {
+   "aggregations": {
+    "max": {
+     "received": 115.90811,
+     "sent": 155.09322
+    },
+    "mean": {
+     "received": 11.629869104918034,
+     "sent": 5.710163939344264
+    },
+    "min": {
+     "received": 1.0388878,
+     "sent": 0
+    }
+   },
+   "data": [
+    [
+     1778336776,
+     6.864505,
+     155.09322
+    ],
+    [
+     1778336777,
+     21.25825,
+     98.73353
+    ],
+    [
+     1778336778,
+     10.250648,
+     15.212864
+    ],
+    [
+     1778336779,
+     30.81031,
+     1.834658
+    ],
+    [
+     1778336780,
+     12.980581,
+     1.764948
+    ],
+    [
+     1778336781,
+     29.35334,
+     3.338213
+    ],
+    [
+     1778336782,
+     14.577922,
+     1.958016
+    ],
+    [
+     1778336783,
+     1.903267,
+     0.880155
+    ],
+    [
+     1778336784,
+     2.328267,
+     0.2243959
+    ],
+    [
+     1778336785,
+     1.6762112,
+     0
+    ],
+    [
+     1778336786,
+     23.72361,
+     1.6100623
+    ],
+    [
+     1778336787,
+     15.77504,
+     0.6459377
+    ],
+    [
+     1778336788,
+     3.272865,
+     0
+    ],
+    [
+     1778336789,
+     2.019666,
+     0.491029
+    ],
+    [
+     1778336790,
+     1.0388878,
+     0.196971
+    ],
+    [
+     1778336791,
+     68.75256,
+     16.9411
+    ],
+    [
+     1778336792,
+     115.90811,
+     17.63275
+    ],
+    [
+     1778336793,
+     37.3517,
+     4.34615
+    ],
+    [
+     1778336794,
+     2.158278,
+     0
+    ],
+    [
+     1778336795,
+     1.757949,
+     0
+    ],
+    [
+     1778336796,
+     7.32185,
+     0.4910953
+    ],
+    [
+     1778336797,
+     8.396311,
+     1.1791086
+    ],
+    [
+     1778336798,
+     9.667307,
+     0.3937961
+    ],
+    [
+     1778336799,
+     7.101431,
+     0.4910696
+    ],
+    [
+     1778336800,
+     4.204668,
+     0.1969304
+    ],
+    [
+     1778336801,
+     8.673292,
+     1.850205
+    ],
+    [
+     1778336802,
+     5.660507,
+     1.4613241
+    ],
+    [
+     1778336803,
+     1.74749,
+     0.2884712
+    ],
+    [
+     1778336804,
+     2.802157,
+     0.8679629
+    ],
+    [
+     1778336805,
+     1.3523832,
+     0.3480371
+    ],
+    [
+     1778336806,
+     9.033735,
+     0.4910695
+    ],
+    [
+     1778336807,
+     9.225691,
+     0.1969305
+    ],
+    [
+     1778336808,
+     5.901578,
+     0
+    ],
+    [
+     1778336809,
+     16.759779,
+     0.4910793
+    ],
+    [
+     1778336810,
+     6.696205,
+     0.7565261
+    ],
+    [
+     1778336811,
+     35.41201,
+     1.5149496
+    ],
+    [
+     1778336812,
+     30.10842,
+     1.3168756
+    ],
+    [
+     1778336813,
+     7.660801,
+     1.4397776
+    ],
+    [
+     1778336814,
+     2.806131,
+     1.5680121
+    ],
+    [
+     1778336815,
+     1.87293,
+     1.2482082
+    ],
+    [
+     1778336816,
+     6.44446,
+     0.8801823
+    ],
+    [
+     1778336817,
+     3.288188,
+     0.7839965
+    ],
+    [
+     1778336818,
+     1.90804,
+     0.2243927
+    ],
+    [
+     1778336819,
+     6.828999,
+     1.3533837
+    ],
+    [
+     1778336820,
+     3.19449,
+     0.5426163
+    ],
+    [
+     1778336821,
+     19.76063,
+     1.2676127
+    ],
+    [
+     1778336822,
+     9.718511,
+     0.7482159
+    ],
+    [
+     1778336823,
+     2.672052,
+     0.0961715
+    ],
+    [
+     1778336824,
+     5.286905,
+     0
+    ],
+    [
+     1778336825,
+     7.638412,
+     0.9821836
+    ],
+    [
+     1778336826,
+     9.096607,
+     0.8849159
+    ],
+    [
+     1778336827,
+     7.930212,
+     0.1969005
+    ],
+    [
+     1778336828,
+     3.291826,
+     0
+    ],
+    [
+     1778336829,
+     7.400576,
+     0.4910088
+    ],
+    [
+     1778336830,
+     3.118799,
+     0.1969912
+    ],
+    [
+     1778336831,
+     1.702029,
+     1.0735391
+    ],
+    [
+     1778336832,
+     10.289262,
+     0.670295
+    ],
+    [
+     1778336833,
+     7.814231,
+     0.3359992
+    ],
+    [
+     1778336834,
+     2.653409,
+     0.0961667
+    ],
+    [
+     1778336835,
+     1.2869012,
+     0
+    ],
+    [
+     1778336836,
+     1.930833,
+     0
+    ]
+   ],
+   "end": 1778336776,
+   "identifier": "eth1",
+   "legend": [
+    "time",
+    "received",
+    "sent"
+   ],
+   "name": "interface",
+   "start": 1778336836
+  },
+  {
+   "aggregations": {
+    "max": {
+     "received": 7.908043,
+     "sent": 2.563194
+    },
+    "mean": {
+     "received": 0.5699999983333335,
+     "sent": 0.07853333833333334
+    },
+    "min": {
+     "received": 0,
+     "sent": 0
+    }
+   },
+   "data": [
+    [
+     1778336776,
+     7.908043,
+     0
+    ],
+    [
+     1778336777,
+     7.094423,
+     0
+    ],
+    [
+     1778336778,
+     1.5735337,
+     0
+    ],
+    [
+     1778336779,
+     0,
+     0
+    ],
+    [
+     1778336780,
+     0,
+     0
+    ],
+    [
+     1778336781,
+     1.781454,
+     0.7993702
+    ],
+    [
+     1778336782,
+     1.057135,
+     0.3206298
+    ],
+    [
+     1778336783,
+     0.1374113,
+     0
+    ],
+    [
+     1778336784,
+     0,
+     0
+    ],
+    [
+     1778336785,
+     0,
+     0
+    ],
+    [
+     1778336786,
+     1.2501991,
+     2.563194
+    ],
+    [
+     1778336787,
+     0.8443629,
+     1.0288063
+    ],
+    [
+     1778336788,
+     0.137438,
+     0
+    ],
+    [
+     1778336789,
+     0,
+     0
+    ],
+    [
+     1778336790,
+     0,
+     0
+    ],
+    [
+     1778336791,
+     0.4909434,
+     0
+    ],
+    [
+     1778336792,
+     0.1970566,
+     0
+    ],
+    [
+     1778336793,
+     0,
+     0
+    ],
+    [
+     1778336794,
+     0,
+     0
+    ],
+    [
+     1778336795,
+     0,
+     0
+    ],
+    [
+     1778336796,
+     0,
+     0
+    ],
+    [
+     1778336797,
+     0,
+     0
+    ],
+    [
+     1778336798,
+     0.3425914,
+     0
+    ],
+    [
+     1778336799,
+     0.1374086,
+     0
+    ],
+    [
+     1778336800,
+     0,
+     0
+    ],
+    [
+     1778336801,
+     1.861385,
+     0
+    ],
+    [
+     1778336802,
+     1.0892096,
+     0
+    ],
+    [
+     1778336803,
+     0.1374053,
+     0
+    ],
+    [
+     1778336804,
+     0.342585,
+     0
+    ],
+    [
+     1778336805,
+     0.137415,
+     0
+    ],
+    [
+     1778336806,
+     0.4910212,
+     0
+    ],
+    [
+     1778336807,
+     0.1969788,
+     0
+    ],
+    [
+     1778336808,
+     0.3425584,
+     0
+    ],
+    [
+     1778336809,
+     0.1374416,
+     0
+    ],
+    [
+     1778336810,
+     0,
+     0
+    ],
+    [
+     1778336811,
+     0,
+     0
+    ],
+    [
+     1778336812,
+     0,
+     0
+    ],
+    [
+     1778336813,
+     0,
+     0
+    ],
+    [
+     1778336814,
+     0,
+     0
+    ],
+    [
+     1778336815,
+     0,
+     0
+    ],
+    [
+     1778336816,
+     0,
+     0
+    ],
+    [
+     1778336817,
+     0,
+     0
+    ],
+    [
+     1778336818,
+     0,
+     0
+    ],
+    [
+     1778336819,
+     1.2676085,
+     0
+    ],
+    [
+     1778336820,
+     0.5083915,
+     0
+    ],
+    [
+     1778336821,
+     1.4273469,
+     0
+    ],
+    [
+     1778336822,
+     0.9152315,
+     0
+    ],
+    [
+     1778336823,
+     0.4800098,
+     0
+    ],
+    [
+     1778336824,
+     0.1374118,
+     0
+    ],
+    [
+     1778336825,
+     0,
+     0
+    ],
+    [
+     1778336826,
+     0,
+     0
+    ],
+    [
+     1778336827,
+     0,
+     0
+    ],
+    [
+     1778336828,
+     0,
+     0
+    ],
+    [
+     1778336829,
+     0.342489,
+     0
+    ],
+    [
+     1778336830,
+     0.137511,
+     0
+    ],
+    [
+     1778336831,
+     0.5823946,
+     0
+    ],
+    [
+     1778336832,
+     0.2336054,
+     0
+    ],
+    [
+     1778336833,
+     0,
+     0
+    ],
+    [
+     1778336834,
+     0.3425792,
+     0
+    ],
+    [
+     1778336835,
+     0.1374208,
+     0
+    ]
+   ],
+   "end": 1778336776,
+   "identifier": "eth2",
+   "legend": [
+    "time",
+    "received",
+    "sent"
+   ],
+   "name": "interface",
+   "start": 1778336836
+  },
+  {
+   "aggregations": {
+    "max": {
+     "received": 25.1208,
+     "sent": 24.00178
+    },
+    "mean": {
+     "received": 3.241600265,
+     "sent": 2.8476001033333342
+    },
+    "min": {
+     "received": 0,
+     "sent": 0
+    }
+   },
+   "data": [
+    [
+     1778336776,
+     0,
+     0
+    ],
+    [
+     1778336777,
+     0.3425408,
+     0
+    ],
+    [
+     1778336778,
+     0.1374592,
+     0
+    ],
+    [
+     1778336779,
+     0.5594984,
+     0
+    ],
+    [
+     1778336780,
+     21.05211,
+     18.80651
+    ],
+    [
+     1778336781,
+     9.418328,
+     8.339089
+    ],
+    [
+     1778336782,
+     0.9855799,
+     0.3184002
+    ],
+    [
+     1778336783,
+     0.7839685,
+     0
+    ],
+    [
+     1778336784,
+     0.2245124,
+     0
+    ],
+    [
+     1778336785,
+     0,
+     0
+    ],
+    [
+     1778336786,
+     0,
+     0
+    ],
+    [
+     1778336787,
+     0.3425318,
+     0
+    ],
+    [
+     1778336788,
+     0.1374682,
+     0
+    ],
+    [
+     1778336789,
+     0,
+     0
+    ],
+    [
+     1778336790,
+     22.60767,
+     20.88355
+    ],
+    [
+     1778336791,
+     9.072334,
+     8.380454
+    ],
+    [
+     1778336792,
+     0,
+     0
+    ],
+    [
+     1778336793,
+     0,
+     0
+    ],
+    [
+     1778336794,
+     0,
+     0
+    ],
+    [
+     1778336795,
+     0,
+     0
+    ],
+    [
+     1778336796,
+     0,
+     0
+    ],
+    [
+     1778336797,
+     0,
+     0
+    ],
+    [
+     1778336798,
+     0.3425583,
+     0
+    ],
+    [
+     1778336799,
+     0.1374417,
+     0
+    ],
+    [
+     1778336800,
+     25.1208,
+     24.00178
+    ],
+    [
+     1778336801,
+     10.079204,
+     9.630222
+    ],
+    [
+     1778336802,
+     0,
+     0
+    ],
+    [
+     1778336803,
+     0,
+     0
+    ],
+    [
+     1778336804,
+     0,
+     0
+    ],
+    [
+     1778336805,
+     0,
+     0
+    ],
+    [
+     1778336806,
+     0,
+     0
+    ],
+    [
+     1778336807,
+     0,
+     0
+    ],
+    [
+     1778336808,
+     0.3425243,
+     0
+    ],
+    [
+     1778336809,
+     0.1374757,
+     0
+    ],
+    [
+     1778336810,
+     20.26743,
+     18.80589
+    ],
+    [
+     1778336811,
+     8.132571,
+     7.54611
+    ],
+    [
+     1778336812,
+     0,
+     0
+    ],
+    [
+     1778336813,
+     0.5595002,
+     0
+    ],
+    [
+     1778336814,
+     0.7840065,
+     0
+    ],
+    [
+     1778336815,
+     0.7839755,
+     0
+    ],
+    [
+     1778336816,
+     0.7840217,
+     0
+    ],
+    [
+     1778336817,
+     0.7840036,
+     0
+    ],
+    [
+     1778336818,
+     0.2244925,
+     0
+    ],
+    [
+     1778336819,
+     0.3425651,
+     0
+    ],
+    [
+     1778336820,
+     20.40474,
+     18.80577
+    ],
+    [
+     1778336821,
+     8.1327,
+     7.546229
+    ],
+    [
+     1778336822,
+     0,
+     0
+    ],
+    [
+     1778336823,
+     0,
+     0
+    ],
+    [
+     1778336824,
+     1.1645853,
+     0.7878077
+    ],
+    [
+     1778336825,
+     0.4674147,
+     0.3161923
+    ],
+    [
+     1778336826,
+     0,
+     0
+    ],
+    [
+     1778336827,
+     0,
+     0
+    ],
+    [
+     1778336828,
+     0,
+     0
+    ],
+    [
+     1778336829,
+     0.6849216,
+     0
+    ],
+    [
+     1778336830,
+     20.8833,
+     19.04405
+    ],
+    [
+     1778336831,
+     8.271783,
+     7.643952
+    ],
+    [
+     1778336832,
+     0,
+     0
+    ],
+    [
+     1778336833,
+     0,
+     0
+    ],
+    [
+     1778336834,
+     0,
+     0
+    ],
+    [
+     1778336835,
+     0,
+     0
+    ]
+   ],
+   "end": 1778336776,
+   "identifier": "eth3",
+   "legend": [
+    "time",
+    "received",
+    "sent"
+   ],
+   "name": "interface",
+   "start": 1778336836
+  },
+  {
+   "aggregations": {
+    "max": {
+     "received": 40.58952,
+     "sent": 45.01649
+    },
+    "mean": {
+     "received": 3.650674616393443,
+     "sent": 3.4189269836065566
+    },
+    "min": {
+     "received": 0,
+     "sent": 0
+    }
+   },
+   "data": [
+    [
+     1778336776,
+     1.4399862,
+     0.9119912
+    ],
+    [
+     1778336777,
+     1.4399429,
+     0.9119638
+    ],
+    [
+     1778336778,
+     1.4400139,
+     0.9120088
+    ],
+    [
+     1778336779,
+     1.4399799,
+     0.9119873
+    ],
+    [
+     1778336780,
+     1.4400538,
+     0.9120341
+    ],
+    [
+     1778336781,
+     1.4400169,
+     0.9120107
+    ],
+    [
+     1778336782,
+     1.4400062,
+     0.9120039
+    ],
+    [
+     1778336783,
+     1.4398973,
+     0.9119349
+    ],
+    [
+     1778336784,
+     1.4400855,
+     0.9120542
+    ],
+    [
+     1778336785,
+     1.4400156,
+     0.9120099
+    ],
+    [
+     1778336786,
+     1.4397678,
+     0.9118529
+    ],
+    [
+     1778336787,
+     1.4401375,
+     0.9120871
+    ],
+    [
+     1778336788,
+     1.4400359,
+     0.9120227
+    ],
+    [
+     1778336789,
+     1.4398025,
+     0.9118749
+    ],
+    [
+     1778336790,
+     40.58952,
+     45.01649
+    ],
+    [
+     1778336791,
+     17.15448,
+     18.61552
+    ],
+    [
+     1778336792,
+     1.4401407,
+     0.9120891
+    ],
+    [
+     1778336793,
+     0.4125,
+     0.26125
+    ],
+    [
+     1778336794,
+     1.0274979,
+     0.6507487
+    ],
+    [
+     1778336795,
+     2.467775,
+     1.5629242
+    ],
+    [
+     1778336796,
+     1.852344,
+     1.1731515
+    ],
+    [
+     1778336797,
+     1.4400154,
+     0.9120097
+    ],
+    [
+     1778336798,
+     0.4123673,
+     0.2611659
+    ],
+    [
+     1778336799,
+     1.0275472,
+     0.6507799
+    ],
+    [
+     1778336800,
+     22.74538,
+     23.96427
+    ],
+    [
+     1778336801,
+     9.990671,
+     10.163765
+    ],
+    [
+     1778336802,
+     1.4400187,
+     0.9120118
+    ],
+    [
+     1778336803,
+     0.4123786,
+     0.2611731
+    ],
+    [
+     1778336804,
+     0,
+     0
+    ],
+    [
+     1778336805,
+     3.082764,
+     1.952417
+    ],
+    [
+     1778336806,
+     2.264777,
+     1.4343586
+    ],
+    [
+     1778336807,
+     1.4397643,
+     0.9118507
+    ],
+    [
+     1778336808,
+     0.4126953,
+     0.2613737
+    ],
+    [
+     1778336809,
+     0,
+     0
+    ],
+    [
+     1778336810,
+     3.082654,
+     1.952348
+    ],
+    [
+     1778336811,
+     2.264957,
+     1.4344725
+    ],
+    [
+     1778336812,
+     1.4399181,
+     0.9119481
+    ],
+    [
+     1778336813,
+     0.412471,
+     0.2612317
+    ],
+    [
+     1778336814,
+     0,
+     0
+    ],
+    [
+     1778336815,
+     0,
+     0
+    ],
+    [
+     1778336816,
+     3.082707,
+     1.952381
+    ],
+    [
+     1778336817,
+     2.264876,
+     1.4344218
+    ],
+    [
+     1778336818,
+     1.439957,
+     0.9119728
+    ],
+    [
+     1778336819,
+     0.4124592,
+     0.2612241
+    ],
+    [
+     1778336820,
+     39.14878,
+     44.10375
+    ],
+    [
+     1778336821,
+     17.77012,
+     19.00569
+    ],
+    [
+     1778336822,
+     1.852639,
+     1.1733378
+    ],
+    [
+     1778336823,
+     1.4400375,
+     0.9120238
+    ],
+    [
+     1778336824,
+     0.4124158,
+     0.2611967
+    ],
+    [
+     1778336825,
+     1.0275863,
+     0.6508047
+    ],
+    [
+     1778336826,
+     2.467657,
+     1.5628497
+    ],
+    [
+     1778336827,
+     1.852384,
+     1.1731764
+    ],
+    [
+     1778336828,
+     1.4400165,
+     0.9120104
+    ],
+    [
+     1778336829,
+     0.4123559,
+     0.2611588
+    ],
+    [
+     1778336830,
+     1.0274678,
+     0.6507296
+    ],
+    [
+     1778336831,
+     2.467676,
+     1.5628617
+    ],
+    [
+     1778336832,
+     1.852433,
+     1.1732077
+    ],
+    [
+     1778336833,
+     1.4399912,
+     0.9119944
+    ],
+    [
+     1778336834,
+     0.4124314,
+     0.2612066
+    ],
+    [
+     1778336835,
+     1.0272686,
+     0.6506035
+    ],
+    [
+     1778336836,
+     2.467514,
+     1.5627589
+    ]
+   ],
+   "end": 1778336776,
+   "identifier": "eth4",
+   "legend": [
+    "time",
+    "received",
+    "sent"
+   ],
+   "name": "interface",
+   "start": 1778336836
+  }
+ ],
+ "service.query": [
+  {
+   "enable": true,
+   "id": 4,
+   "service": "cifs",
+   "state": "RUNNING"
+  },
+  {
+   "enable": false,
+   "id": 6,
+   "service": "ftp",
+   "state": "STOPPED"
+  },
+  {
+   "enable": true,
+   "id": 7,
+   "service": "iscsitarget",
+   "state": "RUNNING"
+  },
+  {
+   "enable": true,
+   "id": 9,
+   "service": "nfs",
+   "state": "RUNNING"
+  },
+  {
+   "enable": false,
+   "id": 10,
+   "service": "snmp",
+   "state": "STOPPED"
+  },
+  {
+   "enable": true,
+   "id": 11,
+   "service": "ssh",
+   "state": "RUNNING"
+  },
+  {
+   "enable": false,
+   "id": 14,
+   "service": "ups",
+   "state": "STOPPED"
+  },
+  {
+   "enable": false,
+   "id": 27,
+   "service": "nvmet",
+   "state": "STOPPED"
+  }
+ ],
+ "system.info": {
+  "datetime": {
+   "$date": 1778336864000
+  },
+  "hostname": "hostname-1",
+  "model": "model-5",
+  "physmem": 36881164099,
+  "system_manufacturer": "manufacturer-1",
+  "system_product": "product-1",
+  "system_serial": "system_serial-1",
+  "uptime_seconds": 291913.866950355,
+  "version": "25.10.7"
+ },
+ "update.status": {
+  "error": null,
+  "status": {}
+ },
+ "virt.instance.query": []
+}

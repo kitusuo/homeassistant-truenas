@@ -1,22 +1,42 @@
-name: HACS Action
+# HACS and Home Assistant's own validation of the integration's structure (manifest, hacs.json, translations).
+name: validate
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    - cron: "41 5 * * 1"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
-on:
-  push:
-  pull_request:
-  schedule:
-    - cron: "0 0 * * *"
-  workflow_dispatch:
-
 jobs:
   hacs:
-    name: HACS Action
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - uses: "actions/checkout@v4"
-      - name: HACS Action
-        uses: "hacs/action@main"
+      # ⚠️ PINNING GAP, documented: the action is pinned by commit, but it is a Docker action whose action.yml runs
+      #    `docker://ghcr.io/hacs/action:main` — a mutable tag this workflow cannot override. Accepted: the job has a
+      #    read-only token and validates metadata only. (hassfest below runs its image by digest instead.)
+      - uses: hacs/action@1ebf01c408f29afcb6406bd431bc98fd8cbb15aa  # main, 2026-06-08
         with:
-          category: "integration"
+          category: integration
+          comment: "false"      # no PR comment: the token here is read-only
+          # store-listing rules, not integration checks: this fork is installed as a custom repository, not listed
+          # in the HACS default store (Issues are off by choice; the repo carries no topics)
+          ignore: issues topics
+  hassfest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      # home-assistant/actions/hassfest is `docker run ghcr.io/home-assistant/hassfest` (the mutable :latest);
+      # the same run, with the image pinned BY DIGEST — the build for HA 2026.10.2, the version the tests use.
+      - name: hassfest
+        run: >
+          docker run --rm -v "${{ github.workspace }}:/github/workspace"
+          ghcr.io/home-assistant/hassfest@sha256:2dce3c5423a600e7965e5a3d5a95e0707e8452fb001ab2b5d0602099bbecba92

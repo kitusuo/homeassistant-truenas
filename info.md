@@ -14,9 +14,8 @@ Monitor and control your TrueNAS CORE/SCALE device from Home Assistant.
  * Create a Dataset Snapshot
 
 ## Links
-- [Documentation](https://github.com/tomaae/homeassistant-truenas/tree/master)
-- [Configuration](https://github.com/tomaae/homeassistant-truenas/tree/master#setup-integration)
-- [Report a Bug](https://github.com/tomaae/homeassistant-truenas/issues/new?labels=bug&template=bug_report.md&title=%5BBug%5D)
-- [Suggest an idea](https://github.com/tomaae/homeassistant-truenas/issues/new?labels=enhancement&template=feature_request.md&title=%5BFeature%5D)
+- [Documentation](https://github.com/kitusuo/homeassistant-truenas)
+- [Configuration](https://github.com/kitusuo/homeassistant-truenas#setup-integration)
 
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G71MKZG)
+A maintained fork of [tomaae/homeassistant-truenas](https://github.com/tomaae/homeassistant-truenas) — the original
+work is tomaae's ([ko-fi](https://ko-fi.com/G2G71MKZG)).
