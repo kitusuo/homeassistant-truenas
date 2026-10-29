@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+.coverage
+htmlcov/
+.pytest_cache/
+coverage.xml
+truenas.zip
+.mypy_cache/
+.DS_Store

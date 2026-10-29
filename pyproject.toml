@@ -1,0 +1,57 @@
+# kitusuo's fork of tomaae/homeassistant-truenas, maintained on its own (2026-10-29): tests, CI, and a supply-chain
+# policy — a hash-pinned uv.lock, a 7-day cooldown on every update (`exclude-newer` below, plus Dependabot's
+# `cooldown`), and a `pip-audit` scan in the gate.
+[project]
+name = "homeassistant-truenas"
+version = "0.0.0"  # the release tag stamps custom_components/truenas/manifest.json; this is not a package
+description = "TrueNAS integration for Home Assistant (kitusuo fork)"
+requires-python = ">=3.14.2"
+# The integration's runtime requirement, as in manifest.json ("requirements"). Home Assistant installs it there.
+dependencies = [
+    "websockets>=15.0.1",
+]
+
+[dependency-groups]
+dev = [
+    # Pins ONE Home Assistant version per release: 0.13.373 = HA 2026.10.2 (the house runs 2026.10.x)
+    "pytest-homeassistant-custom-component>=0.13.373",
+    "pytest-cov>=6.0",
+    "pip-audit>=2.9",
+    "black>=25.1",
+]
+
+[tool.uv]
+# A Home Assistant custom component run from its folder, not an installable package.
+package = false
+# 🛑 The 7-day cooldown lives HERE, so it binds every resolver — `make lock`, a bare `uv lock` / `uv add`, and
+#    Dependabot's uv updates alike (a Makefile-only cutoff bound nothing else, PR #1 review). Nothing younger is locked.
+exclude-newer = "7 days"
+# 🛑 SECURITY OVERRIDES for the TEST environment only (policy: a known advisory is fixed before anything else).
+#    homeassistant 2026.10.x pins Pillow==12.3.0 (39 advisories, fixed in 13.0.0) and 2026.10.2 pins uv==0.12.23
+#    (PYSEC-2026-4321, fixed in 0.13.4; the lock holds 0.13.5). This integration ships neither; Home Assistant's own install is HA's to fix.
+#    Drop each line once the pinned homeassistant moves past it (`make audit` stays green without it).
+override-dependencies = [
+    "pillow>=13.0.0",
+    "uv>=0.13.4",
+]
+
+[tool.black]
+target-version = ["py314"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+addopts = "--strict-markers"
+
+[tool.coverage.run]
+branch = true
+source = ["custom_components/truenas"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]

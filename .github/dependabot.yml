@@ -1,0 +1,29 @@
+# Dependency updates under the supply-chain policy: nothing younger than 7 days. `cooldown` holds the package
+# Dependabot bumps; pyproject.toml's `exclude-newer = "7 days"` holds everything uv resolves alongside it.
+# Dependabot SECURITY updates are not held by the cooldown.
+#
+# Not covered, kept by hand: uv itself (setup-uv's `version:` in check.yml).
+version: 2
+updates:
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    groups:
+      python:
+        patterns: ["*"]
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ["*"]
