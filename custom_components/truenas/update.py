@@ -137,11 +137,14 @@ class TrueNASAppUpdate(TrueNASEntity, UpdateEntity):
             )
             return
 
-        self._data["update_jobid"] = await self.hass.async_add_executor_job(
+        jobid = await self.hass.async_add_executor_job(
             self.coordinator.api.query,
             "app.upgrade",
             [self._data["id"]],
         )
+        # app.upgrade returns its job id; an error or no reply must not mark the app
+        # as upgrading
+        self._data["update_jobid"] = jobid if isinstance(jobid, int) else 0
         await self.coordinator.async_refresh()
 
     @property

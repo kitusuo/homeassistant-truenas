@@ -997,3 +997,20 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
 
         for uid, vals in self.ds["app"].items():
             self.ds["app"][uid]["running"] = vals["state"] == "RUNNING"
+
+        # An app upgrade is in progress only while its job runs. Without this the job
+        # id set by async_install was never cleared, and every later install was
+        # refused with "Update installation already in progress" until HA restarted.
+        for uid, vals in self.ds["app"].items():
+            if not vals.get("update_jobid"):
+                continue
+
+            job = self.api.query(
+                "core.get_jobs", params=[[["id", "=", vals["update_jobid"]]]]
+            )
+            if not self.api.connected():
+                return
+
+            # finished (SUCCESS, FAILED, ABORTED) or gone (TrueNAS restarted)
+            if not job or job[0].get("state") not in ("WAITING", "RUNNING"):
+                self.ds["app"][uid]["update_jobid"] = 0
