@@ -83,3 +83,24 @@ async def test_a_nas_that_drops_off_mid_update_makes_the_entities_unavailable(
     await hass.async_block_till_done()
     assert coordinator.last_update_success is False
     assert hass.states.get("binary_sensor.truenas_services_ssh").state == "unavailable"
+
+
+async def test_the_recorded_nas_produces_exactly_the_known_entities(
+    hass, setup_integration
+):
+    """A guard on every change to how entities are created: the 84 entity ids the recording produces
+    (tests/fixtures/entity_ids.json). A change here is a change users see — review it, then update the list.
+    """
+    import json
+    import pathlib
+
+    expected = json.loads(
+        (pathlib.Path(__file__).parent / "fixtures" / "entity_ids.json").read_text()
+    )
+    ids = sorted(
+        e.entity_id
+        for e in er.async_entries_for_config_entry(
+            er.async_get(hass), setup_integration.entry_id
+        )
+    )
+    assert ids == expected
