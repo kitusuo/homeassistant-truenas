@@ -8,3 +8,6 @@ coverage.xml
 truenas.zip
 .mypy_cache/
 .DS_Store
+
+# local agent instructions (kept out of the public repo)
+CLAUDE.md
