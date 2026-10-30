@@ -1078,7 +1078,7 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
                 return
 
             # finished (SUCCESS, FAILED, ABORTED), gone (TrueNAS restarted), or an error
-            # reply (a dict, not the list of jobs: job[0] raised and failed every refresh)
+            # reply (None, not the list of jobs)
             if (
                 not isinstance(job, list)
                 or not job

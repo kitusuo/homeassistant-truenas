@@ -110,9 +110,11 @@ class FakeTrueNASAPI:
         else:
             answer = self.responses[service]
             answer = copy.deepcopy(answer(wire) if callable(answer) else answer)
-            # a test injects a JSON-RPC error reply as the answer itself; anything else is a result
+            # a test injects a JSON-RPC error reply (the envelope: "jsonrpc", no "result") as the answer itself.
+            # Anything else is a result, even one with an "error" field of its own (25.10's update.status).
             is_error_reply = (
                 isinstance(answer, dict)
+                and "jsonrpc" in answer
                 and "error" in answer
                 and "result" not in answer
             )

@@ -193,9 +193,12 @@ class TrueNASAPI(object):
                         # a result is a result, whatever its fields
                         data = data["result"]
                     else:
-                        # a JSON-RPC error reply: no result, an "error" object
+                        # a JSON-RPC error reply: no result, an "error" object. It is not data:
+                        # callers get None (the reason is in self.error and the log), so none
+                        # can mistake the reply for the record it asked for.
                         self._error = "malformed_result"
                         error = data.get("error")
+                        data = None
                         if isinstance(error, dict):
                             details = error.get("data")
                             reason = (
