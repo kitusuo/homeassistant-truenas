@@ -395,9 +395,7 @@ async def test_a_cpu_temperature_graph_without_aggregations_is_unknown_not_zero(
 async def test_one_error_reply_to_system_info_keeps_the_last_known_system(
     hass, truenas_api, config_entry
 ):
-    """An error reply reached parse_api as a dict, which it took for system.info itself: every field reset to its
-    default (hostname and version "unknown", uptime 0), so the uptime sensor said the NAS had just booted until the
-    next good poll."""
+    """An error reply must not be parsed as the record: the last known system stays."""
     coordinator = await setup_entry(hass, config_entry)
     booted = datetime.fromisoformat(state(hass, "sensor.truenas_system_uptime").state)
     known = {k: coordinator.ds["system_info"][k] for k in ("hostname", "version")}

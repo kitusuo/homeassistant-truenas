@@ -129,7 +129,7 @@ class TrueNASClousyncSensor(TrueNASSensor):
             [self._data["id"]],
         )
 
-        if "job" not in tmp_job:
+        if not isinstance(tmp_job, dict) or "job" not in tmp_job:
             _LOGGER.error(
                 "Clousync job %s (%s) invalid",
                 self._data["description"],
@@ -161,7 +161,7 @@ class TrueNASClousyncSensor(TrueNASSensor):
             [self._data["id"]],
         )
 
-        if "job" not in tmp_job:
+        if not isinstance(tmp_job, dict) or "job" not in tmp_job:
             _LOGGER.error(
                 "Clousync job %s (%s) invalid",
                 self._data["description"],

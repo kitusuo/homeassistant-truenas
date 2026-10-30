@@ -72,7 +72,7 @@ class TrueNASVMBinarySensor(TrueNASBinarySensor):
             [self._data["id"]],
         )
 
-        if "status" not in tmp_vm:
+        if not isinstance(tmp_vm, dict) or "status" not in tmp_vm:
             _LOGGER.error("VM %s (%s) invalid", self._data["name"], self._data["id"])
             return
 
@@ -96,7 +96,7 @@ class TrueNASVMBinarySensor(TrueNASBinarySensor):
             [self._data["id"]],
         )
 
-        if "status" not in tmp_vm:
+        if not isinstance(tmp_vm, dict) or "status" not in tmp_vm:
             _LOGGER.error("VM %s (%s) invalid", self._data["name"], self._data["id"])
             return
 
@@ -127,7 +127,7 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
             [self._data["id"]],
         )
 
-        if "state" not in tmp_service:
+        if not isinstance(tmp_service, dict) or "state" not in tmp_service:
             _LOGGER.error(
                 "Service %s (%s) invalid", self._data["service"], self._data["id"]
             )
@@ -157,7 +157,7 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
             [self._data["id"]],
         )
 
-        if "state" not in tmp_service:
+        if not isinstance(tmp_service, dict) or "state" not in tmp_service:
             _LOGGER.error(
                 "Service %s (%s) invalid", self._data["service"], self._data["id"]
             )
@@ -186,7 +186,7 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
             [self._data["id"]],
         )
 
-        if "state" not in tmp_service:
+        if not isinstance(tmp_service, dict) or "state" not in tmp_service:
             _LOGGER.error(
                 "Service %s (%s) invalid", self._data["service"], self._data["id"]
             )
@@ -216,7 +216,7 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
             [self._data["id"]],
         )
 
-        if "state" not in tmp_service:
+        if not isinstance(tmp_service, dict) or "state" not in tmp_service:
             _LOGGER.error(
                 "Service %s (%s) invalid", self._data["service"], self._data["id"]
             )

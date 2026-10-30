@@ -161,7 +161,11 @@ class TrueNASAPI(object):
     #   query
     # ---------------------------
     def query(self, service: str, params: dict[str, Any] | None = {}) -> list | None:
-        """Retrieve data from TrueNAS."""
+        """Retrieve data from TrueNAS.
+
+        Returns the result, or None for an error reply or a broken connection (the reason is in `error`). A method
+        whose successful result is itself null (`system.reboot`, `zfs.snapshot.create`) is told apart by `error`.
+        """
         if not self.connected():
             self.connect()
 
