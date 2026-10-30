@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import copy
 import json
-import logging
 import pathlib
 from typing import Any
 from unittest.mock import patch
@@ -47,6 +46,22 @@ def method_not_found(service: str) -> dict:
             "data": {"reason": f"Method {service!r} not found"},
         },
     }
+
+
+class _OneReplySocket:
+    """The websocket TrueNASAPI talks to inside FakeTrueNASAPI: answers one send with one reply."""
+
+    def __init__(self, reply: dict):
+        self._reply = json.dumps(reply)
+
+    def send(self, message: str) -> None:
+        pass
+
+    def recv(self) -> str:
+        return self._reply
+
+    def close(self) -> None:
+        pass
 
 
 class FakeTrueNASAPI:
@@ -91,17 +106,35 @@ class FakeTrueNASAPI:
         )
         self.calls.append((service, wire))
         if service not in self.responses:
-            # logged exactly as the real client logs a JSON-RPC error reply
             reply = method_not_found(service)
-            logging.getLogger("custom_components.truenas.api").error(
-                "TrueNAS %s query (%s) error: %s",
-                getattr(self, "host", "?"),
-                service,
-                reply["error"]["data"]["reason"],
+        else:
+            answer = self.responses[service]
+            answer = copy.deepcopy(answer(wire) if callable(answer) else answer)
+            # a test injects a JSON-RPC error reply as the answer itself; anything else is a result
+            is_error_reply = (
+                isinstance(answer, dict)
+                and "error" in answer
+                and "result" not in answer
             )
-            return reply
-        answer = self.responses[service]
-        return copy.deepcopy(answer(wire) if callable(answer) else answer)
+            reply = (
+                answer
+                if is_error_reply
+                else {"jsonrpc": "2.0", "id": 0, "result": answer}
+            )
+        return self._through_the_real_client(service, params, reply)
+
+    def _through_the_real_client(self, service: str, params: Any, reply: dict) -> Any:
+        """Hand the wire reply to the REAL TrueNASAPI over a one-reply socket, so every test sees exactly what the
+        client returns for it (a result, or what it makes of an error reply) and its logging, not a copy of them.
+        """
+        from custom_components.truenas.api import TrueNASAPI
+
+        client = TrueNASAPI(getattr(self, "host", "?"), "key")
+        client._ws = _OneReplySocket(reply)
+        client._connected = True
+        data = client.query(service, params)
+        self.error = client.error
+        return data
 
     def called(self, service: str) -> list[Any]:
         return [p for s, p in self.calls if s == service]
