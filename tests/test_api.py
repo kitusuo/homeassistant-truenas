@@ -177,3 +177,19 @@ def test_reconnect_and_connection_test():
     sock = FakeSocket([{"result": True}, {"result": {"version": "1"}}])
     with patch.object(api_mod, "connect", return_value=sock):
         assert api.connection_test() == (True, "")
+
+
+def test_a_result_that_has_an_error_field_is_a_result_not_an_error():
+    """TrueNAS 25.10's update.status RESULT carries `"error": null`. The client took any "error" key for a JSON-RPC
+    error, read `"data" in None`, raised, disconnected — and the whole refresh failed ("TrueNas Disconnected"), live,
+    on 2026-10-30. Only a reply WITHOUT a result is an error."""
+    result = {
+        "code": "NORMAL",
+        "error": None,
+        "status": {"current_version": {"train": "T"}, "new_version": None},
+        "update_download_progress": None,
+    }
+    api, _ = connected_api({"jsonrpc": "2.0", "id": 0, "result": result})
+    assert api.query("update.status") == result
+    assert api.connected(), "a result must not disconnect the client"
+    assert api.error == ""
