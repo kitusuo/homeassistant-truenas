@@ -23,6 +23,9 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
+#: how long a reporting graph TrueNAS could not serve is left out before it is asked for again
+SYSTEMSTATS_RETRY = timedelta(hours=1)
+
 
 # ---------------------------
 #   TrueNASControllerData
@@ -65,7 +68,8 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
             config_entry.data[CONF_VERIFY_SSL],
         )
 
-        self._systemstats_errored = []
+        # reporting graphs TrueNAS could not serve: (name, identifier) -> when set aside
+        self._systemstats_errored: dict[tuple, datetime] = {}
         self.datasets_hass_device_id = None
         self.last_updatecheck_update = datetime(1970, 1, 1)
 
@@ -347,8 +351,15 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
             tmp_graphs.remove({"name": "cputemp"})
 
         # graphs TrueNAS could not serve are left out (by name AND identifier: every
-        # interface graph is named "interface"); a new list, not a remove() while
-        # iterating, which skipped the element after each removal
+        # interface graph is named "interface") — for an hour, then tried again: a graph
+        # set aside for good stayed unread until Home Assistant restarted. A new list,
+        # not a remove() while iterating, which skipped the element after each removal.
+        now = datetime.now()
+        self._systemstats_errored = {
+            k: t
+            for k, t in self._systemstats_errored.items()
+            if now - t < SYSTEMSTATS_RETRY
+        }
         tmp_graphs = [
             tmp
             for tmp in tmp_graphs
@@ -376,34 +387,43 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
 
         if not isinstance(tmp_graph, list):
             # The batch failed: TrueNAS answers one JSON-RPC error when a single graph
-            # cannot be served. Ask each graph on its own and set aside the ones that
-            # still fail; read the rest. (This waited for api.error == 500, which the
-            # websocket client never reports, so one bad graph left every statistic
-            # unread.) A batch that failed for a reason that has passed sets nothing
-            # aside and is read on the next poll — no endless re-run.
+            # cannot be served. Ask each graph on its own and use those answers; set
+            # aside the graphs that still fail (for SYSTEMSTATS_RETRY). When EVERY graph
+            # fails it is the NAS (netdata down, still booting), not the graphs: nothing
+            # is set aside and the next poll asks again. (This waited for
+            # api.error == 500, which the websocket client never reports.)
             if not self.api.connected():
                 return
 
-            failed = []
+            answered, failed = [], []
             for tmp in tmp_graphs:
                 tmp2 = self.api.query(reporting_path, params=[[tmp], tmp_params[1]])
                 if not self.api.connected():
                     return
 
-                if not isinstance(tmp2, list):
+                if isinstance(tmp2, list):
+                    answered.extend(tmp2)
+                else:
                     failed.append((tmp["name"], tmp.get("identifier")))
 
+            if not answered:
+                _LOGGER.debug(
+                    "TrueNAS %s reporting failed for every graph; asking again next poll",
+                    self.host,
+                )
+                return
+
             if failed:
-                self._systemstats_errored.extend(failed)
+                for k in failed:
+                    self._systemstats_errored[k] = now
                 _LOGGER.warning(
-                    "TrueNAS %s fetching following graphs failed, check your NAS: %s",
+                    "TrueNAS %s fetching following graphs failed, check your NAS "
+                    "(retried in an hour): %s",
                     self.host,
                     ", ".join(n if i in (None, n) else f"{n} ({i})" for n, i in failed),
                 )
-                if len(failed) < len(tmp_graphs):
-                    self.get_systemstats()
 
-            return
+            tmp_graph = answered
 
         for i in range(len(tmp_graph)):
             if "name" not in tmp_graph[i]:
