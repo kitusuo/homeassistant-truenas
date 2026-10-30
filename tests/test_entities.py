@@ -351,3 +351,43 @@ async def test_a_disconnect_during_the_per_graph_retries_sets_nothing_aside(
     await coordinator.async_refresh()
     assert coordinator.last_update_success is True
     assert ("arcsize", None) in last_batch(asked), "nothing was set aside"
+
+
+# ---------------------------------------------------------------- review-2 2.2: the temperature entity
+async def test_an_empty_first_cpu_temperature_still_creates_the_entity_which_fills_in_later(
+    hass, truenas_api, config_entry
+):
+    """Entities are created only at setup, and one whose value was missing then was never created: a NAS whose
+    first CPU-temperature reading was empty never got the sensor, even once readings arrived.
+    """
+    readings = {"mean": {}}
+    graphs = truenas_api.responses["reporting.netdata_get_data"]
+    truenas_api.responses["reporting.netdata_get_data"] = lambda params: [
+        *graphs(params),
+        {
+            "name": "cputemp",
+            "identifier": "cputemp",
+            "legend": ["time", "cpu0"],
+            "aggregations": dict(readings),
+            "data": [],
+        },
+    ]
+    coordinator = await setup_entry(hass, config_entry)
+    assert state(hass, "sensor.truenas_system_temperature").state == "unknown"
+    readings["mean"] = {"cpu0": 45.0}
+    await coordinator.async_refresh()
+    await hass.async_block_till_done()
+    assert state(hass, "sensor.truenas_system_temperature").state == "45.0"
+
+
+async def test_a_cpu_temperature_graph_without_aggregations_is_unknown_not_zero(
+    hass, truenas_api, config_entry
+):
+    """It reported a made-up 0.0 °C."""
+    graphs = truenas_api.responses["reporting.netdata_get_data"]
+    truenas_api.responses["reporting.netdata_get_data"] = lambda params: [
+        *graphs(params),
+        {"name": "cputemp", "identifier": "cputemp", "legend": ["time"], "data": []},
+    ]
+    await setup_entry(hass, config_entry)
+    assert state(hass, "sensor.truenas_system_temperature").state == "unknown"
