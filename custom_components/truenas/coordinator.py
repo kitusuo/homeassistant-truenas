@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import re
 
 from datetime import datetime, timedelta
 
@@ -22,6 +23,9 @@ from .apiparser import parse_api, utc_from_timestamp
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
+
+#: major.minor from any TrueNAS version string: 25.10.7, 25.10-RC.1, TrueNAS-SCALE-24.04.2, TrueNAS-13.0-U6.2
+VERSION_RE = re.compile(r"(?:TrueNAS-)?(?:SCALE-)?(\d+)\.(\d+)")
 
 #: how long a reporting graph TrueNAS could not serve is left out before it is asked for again
 SYSTEMSTATS_RETRY = timedelta(hours=1)
@@ -76,6 +80,7 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
         self._is_virtual = False
         self._version_major = 0
         self._version_minor = 0
+        self._version_parsed_from: str | None = None
 
     # ---------------------------
     #   connected
@@ -199,23 +204,20 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
                 self.ds["system_info"]["update_jobid"] = 0
                 self.ds["system_info"]["update_state"] = "unknown"
 
-        if not self._version_major:
-            self._version_major = int(
-                self.ds["system_info"]
-                .get("version")
-                .removeprefix("TrueNAS-")
-                .removeprefix("SCALE-")
-                .split(".")[0]
+        # Re-read on EVERY poll: parsed once, a TrueNAS upgraded under a running HA kept
+        # the old version (and the old update API) until HA restarted. Parsed with a
+        # pattern: int(version.split(".")[1]) raised on 25.10-RC.1 and on CORE's own
+        # TrueNAS-13.0-U6.2, failing every refresh. Unparseable -> (0, 0).
+        version = str(self.ds["system_info"].get("version") or "")
+        if version != self._version_parsed_from:
+            match = VERSION_RE.match(version)
+            self._version_major, self._version_minor = (
+                (int(match[1]), int(match[2])) if match else (0, 0)
             )
-
-        if not self._version_minor:
-            self._version_minor = int(
-                self.ds["system_info"]
-                .get("version")
-                .removeprefix("TrueNAS-")
-                .removeprefix("SCALE-")
-                .split(".")[1]
-            )
+            if self._version_parsed_from is not None:
+                # upgraded: check for updates now, with the API this version has
+                self.last_updatecheck_update = datetime(1970, 1, 1)
+            self._version_parsed_from = version
 
         self._is_virtual = self.ds["system_info"]["system_manufacturer"] in [
             "QEMU",
