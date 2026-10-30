@@ -196,8 +196,9 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
             if not self.api.connected():
                 return
 
+            # a queued (WAITING) job is in progress too, as for apps
             if (
-                self.ds["system_info"]["update_state"] != "RUNNING"
+                self.ds["system_info"]["update_state"] not in ("WAITING", "RUNNING")
                 or not self.ds["system_info"]["update_available"]
             ):
                 self.ds["system_info"]["update_progress"] = 0
@@ -1075,6 +1076,11 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
             if not self.api.connected():
                 return
 
-            # finished (SUCCESS, FAILED, ABORTED) or gone (TrueNAS restarted)
-            if not job or job[0].get("state") not in ("WAITING", "RUNNING"):
+            # finished (SUCCESS, FAILED, ABORTED), gone (TrueNAS restarted), or an error
+            # reply (a dict, not the list of jobs: job[0] raised and failed every refresh)
+            if (
+                not isinstance(job, list)
+                or not job
+                or job[0].get("state") not in ("WAITING", "RUNNING")
+            ):
                 self.ds["app"][uid]["update_jobid"] = 0

@@ -76,17 +76,19 @@ class TrueNASUpdate(TrueNASEntity, UpdateEntity):
 
     async def async_install(self, version: str, backup: bool, **kwargs: Any) -> None:
         """Install an update."""
-        self._data["update_jobid"] = await self.hass.async_add_executor_job(
+        jobid = await self.hass.async_add_executor_job(
             self.coordinator.api.query,
             "update.run" if self.coordinator.new_update_api else "update.update",
             {"reboot": True},
         )
+        # only a job id (an int) is a job: an error reply must not be polled as one
+        self._data["update_jobid"] = jobid if isinstance(jobid, int) else 0
         await self.coordinator.async_refresh()
 
     @property
     def in_progress(self) -> int:
         """Update installation progress."""
-        if self._data["update_state"] != "RUNNING":
+        if self._data["update_state"] not in ("WAITING", "RUNNING"):
             return False
 
         if self._data["update_progress"] == 0:
