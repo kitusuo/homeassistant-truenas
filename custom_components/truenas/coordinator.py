@@ -447,7 +447,8 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
                         round(max(readings), 2) if readings else None
                     )
                 else:
-                    self.ds["system_info"]["cpu_temperature"] = 0.0
+                    # no aggregations: no reading (it reported a made-up 0.0)
+                    self.ds["system_info"]["cpu_temperature"] = None
 
             # CPU load
             if tmp_graph[i]["name"] == "load":

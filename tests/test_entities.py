@@ -184,8 +184,8 @@ async def test_an_empty_cpu_temperature_graph_does_not_fail_the_update(
     await hass.async_block_till_done()
     assert config_entry.state is ConfigEntryState.LOADED
     assert state(hass, "binary_sensor.truenas_services_ssh").state == "on"
-    # no reading is no reading: the integration creates no entity for a value it does not have (rather than a 0 °C)
-    assert hass.states.get("sensor.truenas_system_temperature") is None
+    # no reading yet: the entity exists (the graph is supported) and is unknown — not missing, not 0 °C
+    assert state(hass, "sensor.truenas_system_temperature").state == "unknown"
 
 
 async def test_a_core_without_a_reading_is_skipped(hass, truenas_api, config_entry):
