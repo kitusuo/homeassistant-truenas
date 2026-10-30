@@ -190,27 +190,26 @@ class TrueNASAPI(object):
                 if message.startswith("{"):
                     data = json.loads(message)
                     if "result" in data:
+                        # a result is a result, whatever its fields: 25.10's
+                        # update.status result carries `"error": null`, which this
+                        # read as an error reply, raised on, and disconnected
                         data = data["result"]
                     else:
+                        # a JSON-RPC error reply: no result, an "error" object
                         self._error = "malformed_result"
-
-                    if (type(data) is list or type(data) is dict) and "error" in data:
-                        if (
-                            "data" in data["error"]
-                            and "reason" in data["error"]["data"]
-                        ):
-                            _LOGGER.error(
-                                "TrueNAS %s query (%s) error: %s",
-                                self._host,
-                                service,
-                                data["error"]["data"]["reason"],
+                        error = data.get("error")
+                        if isinstance(error, dict):
+                            details = error.get("data")
+                            reason = (
+                                details.get("reason")
+                                if isinstance(details, dict)
+                                else None
                             )
-                        else:
                             _LOGGER.error(
                                 "TrueNAS %s query (%s) error: %s",
                                 self._host,
                                 service,
-                                data["error"]["message"],
+                                reason or error.get("message"),
                             )
                 else:
                     data = message
