@@ -9,7 +9,7 @@ from homeassistant.helpers import device_registry as dr
 
 from custom_components.truenas.diagnostics import async_get_config_entry_diagnostics
 
-from .conftest import recording
+from .conftest import method_not_found, recording
 
 
 def state(hass, entity_id):
@@ -389,3 +389,23 @@ async def test_a_cpu_temperature_graph_without_aggregations_is_unknown_not_zero(
     ]
     await setup_entry(hass, config_entry)
     assert state(hass, "sensor.truenas_system_temperature").state == "unknown"
+
+
+# ---------------------------------------------------------------- an error reply is not the record that was asked for
+async def test_one_error_reply_to_system_info_keeps_the_last_known_system(
+    hass, truenas_api, config_entry
+):
+    """An error reply reached parse_api as a dict, which it took for system.info itself: every field reset to its
+    default (hostname and version "unknown", uptime 0), so the uptime sensor said the NAS had just booted until the
+    next good poll."""
+    coordinator = await setup_entry(hass, config_entry)
+    booted = datetime.fromisoformat(state(hass, "sensor.truenas_system_uptime").state)
+    known = {k: coordinator.ds["system_info"][k] for k in ("hostname", "version")}
+
+    truenas_api.responses["system.info"] = method_not_found("system.info")
+    await coordinator.async_refresh()
+    await hass.async_block_till_done()
+
+    still = datetime.fromisoformat(state(hass, "sensor.truenas_system_uptime").state)
+    assert abs(still - booted) < timedelta(seconds=5), (booted, still)
+    assert {k: coordinator.ds["system_info"][k] for k in known} == known

@@ -128,7 +128,9 @@ def test_query_returns_the_result_and_sends_params_as_a_list():
     assert sock.sent[-1]["params"] == [{"x": 1}]
 
 
-def test_query_logs_an_error_reply_and_returns_it(caplog):
+def test_an_error_reply_is_logged_and_returns_none(caplog):
+    """A JSON-RPC error reply is not data. Returned as the reply dict it was truthy, and a caller that parsed it took
+    it for the record it had asked for."""
     reply = {
         "jsonrpc": "2.0",
         "id": 0,
@@ -141,7 +143,7 @@ def test_query_logs_an_error_reply_and_returns_it(caplog):
     api, _ = connected_api(
         reply, {"jsonrpc": "2.0", "id": 0, "error": {"code": 1, "message": "plain"}}
     )
-    assert api.query("update.check_available")["error"]["code"] == -32601
+    assert api.query("update.check_available") is None
     assert api.error == "malformed_result"
     assert "no such method" in caplog.text
     api.query("x")
