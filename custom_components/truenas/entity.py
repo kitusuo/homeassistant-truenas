@@ -67,7 +67,10 @@ async def async_add_entities(
         for entity_description in descriptions:
             data = coordinator.data[entity_description.data_path]
             if not entity_description.data_reference:
-                if data.get(entity_description.data_attribute) is None:
+                # created when the value is SUPPORTED (its key is there), even if it has
+                # no reading yet: entities are only created here, at setup, so one whose
+                # first reading was empty was never created at all
+                if entity_description.data_attribute not in data:
                     continue
                 obj = dispatcher[entity_description.func](
                     coordinator, entity_description
