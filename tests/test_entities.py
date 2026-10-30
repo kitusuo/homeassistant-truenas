@@ -197,26 +197,39 @@ async def test_a_core_without_a_reading_is_skipped(hass, truenas_api, config_ent
 
 
 # ---------------------------------------------------------------- bug 5: a reporting graph TrueNAS cannot serve
-def failing_graph(truenas_api, broken: str, transient: bool = False):
-    """reporting.netdata_get_data answers a JSON-RPC error when the batch asks for `broken`; asked alone, `broken`
-    still fails (or, `transient`, succeeds — the batch failed for a reason that has passed).
-    """
+ERROR = {"jsonrpc": "2.0", "id": 0, "error": {"code": 22, "message": "graph failed"}}
+
+
+def key(graph: dict) -> tuple:
+    return graph["name"], graph.get("identifier")
+
+
+def reporting(truenas_api, fails):
+    """reporting.netdata_get_data answering a JSON-RPC error when `fails(asked_keys)` says so. Returns the list of
+    every request's keys, so tests assert on what the integration ASKS for."""
     graphs = truenas_api.responses["reporting.netdata_get_data"]
-    batches = []
+    asked = []
 
     def answer(params):
-        names = [g["name"] for g in params[0]]
-        batches.append(names)
-        if broken in names and (len(names) > 1 or not transient):
-            return {
-                "jsonrpc": "2.0",
-                "id": 0,
-                "error": {"code": 22, "message": "graph failed"},
-            }
-        return graphs(params)
+        keys = [key(g) for g in params[0]]
+        asked.append(keys)
+        return ERROR if fails(keys) else graphs(params)
 
     truenas_api.responses["reporting.netdata_get_data"] = answer
-    return batches
+    return asked
+
+
+async def setup_entry(hass, config_entry):
+    config_entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    assert config_entry.state is ConfigEntryState.LOADED
+    return hass.data["truenas"][config_entry.entry_id]
+
+
+def last_batch(asked):
+    """The keys of the most recent multi-graph request."""
+    return next(b for b in reversed(asked) if len(b) > 1)
 
 
 async def test_a_graph_truenas_cannot_serve_is_set_aside_and_the_rest_still_read(
@@ -225,50 +238,116 @@ async def test_a_graph_truenas_cannot_serve_is_set_aside_and_the_rest_still_read
     """One failing graph failed the whole batch and the statistics stayed unread: the retry path that should have
     found it could never run (it waited for api.error == 500, and then indexed a list with "graphs").
     """
-    batches = failing_graph(truenas_api, "arcsize")
-    config_entry.add_to_hass(hass)
-    assert await hass.config_entries.async_setup(config_entry.entry_id)
-    await hass.async_block_till_done()
-    assert config_entry.state is ConfigEntryState.LOADED
+    asked = reporting(truenas_api, lambda keys: ("arcsize", None) in keys)
+    coordinator = await setup_entry(hass, config_entry)
     assert state(hass, "sensor.truenas_system_cpu_usage").state == "0.57"
-    assert "arcsize" in caplog.text, "the graph set aside is named in the log"
-    coordinator = hass.data["truenas"][config_entry.entry_id]
-    batches.clear()
+    warnings = [
+        r
+        for r in caplog.records
+        if r.levelname == "WARNING" and "arcsize" in r.getMessage()
+    ]
+    assert warnings, "the graph set aside is named in a WARNING"
+    asked.clear()
     await coordinator.async_refresh()
-    assert batches and all(
-        "arcsize" not in b for b in batches
-    ), "later batches leave it out"
+    assert ("arcsize", None) not in last_batch(asked), "later batches leave it out"
+    assert ("cpu", None) in last_batch(asked)
 
 
-async def test_a_batch_that_failed_once_is_not_retried_for_ever(
+async def test_a_batch_that_failed_but_whose_graphs_work_alone_is_read_in_the_same_poll(
     hass, truenas_api, config_entry
 ):
-    """Every graph works on its own: nothing is set aside, and the update ends (no endless re-run)."""
-    batches = failing_graph(truenas_api, "arcsize", transient=True)
-    config_entry.add_to_hass(hass)
-    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    """The answers to the per-graph requests are used — not thrown away for another batch — and nothing is set
+    aside: the next poll asks for everything again."""
+    asked = reporting(truenas_api, lambda keys: len(keys) > 1 and len(asked) == 1)
+    coordinator = await setup_entry(hass, config_entry)
+    assert state(hass, "sensor.truenas_system_cpu_usage").state == "0.57"
+    assert len(asked) < 15, "one batch plus one request per graph, no endless re-run"
+    asked.clear()
+    await coordinator.async_refresh()
+    assert ("arcsize", None) in last_batch(asked)
+
+
+async def test_when_every_graph_fails_nothing_is_set_aside_and_the_statistics_recover(
+    hass, truenas_api, config_entry
+):
+    """netdata down for a moment (a NAS still booting): every graph fails alone too. That is the NAS, not the
+    graphs — set aside, they stayed unread until Home Assistant restarted."""
+    down = {"now": True}
+    asked = reporting(truenas_api, lambda keys: down["now"])
+    coordinator = await setup_entry(hass, config_entry)
+    assert state(hass, "sensor.truenas_system_cpu_usage").state == "0.0"
+    down["now"] = False
+    await coordinator.async_refresh()
     await hass.async_block_till_done()
-    assert config_entry.state is ConfigEntryState.LOADED
-    coordinator = hass.data["truenas"][config_entry.entry_id]
-    assert coordinator._systemstats_errored == []
-    assert len(batches) < 20
+    assert state(hass, "sensor.truenas_system_cpu_usage").state == "0.57"
+    assert ("arcsize", None) in last_batch(asked)
+
+
+async def test_a_graph_set_aside_is_tried_again_after_an_hour(
+    hass, truenas_api, config_entry, freezer
+):
+    asked = reporting(truenas_api, lambda keys: ("arcsize", None) in keys)
+    coordinator = await setup_entry(hass, config_entry)
+    freezer.tick(timedelta(minutes=30))
+    asked.clear()
+    await coordinator.async_refresh()
+    assert ("arcsize", None) not in last_batch(asked), "within the hour: still left out"
+    freezer.tick(timedelta(minutes=31))
+    asked.clear()
+    await coordinator.async_refresh()
+    assert ("arcsize", None) in last_batch(asked), "after an hour: asked again"
+
+
+async def test_two_graphs_set_aside_side_by_side_are_both_left_out(
+    hass, truenas_api, config_entry
+):
+    """The leave-out filter removed from the list it iterated, skipping the graph after each removal."""
+    broken = {("cpu", None), ("arcsize", None)}
+    asked = reporting(truenas_api, lambda keys: bool(broken & set(keys)))
+    coordinator = await setup_entry(hass, config_entry)
+    asked.clear()
+    await coordinator.async_refresh()
+    assert not broken & set(last_batch(asked))
+    assert state(hass, "sensor.truenas_system_cpu_load_shortterm").state == "0.08"
 
 
 async def test_one_failing_interface_graph_sets_aside_only_that_interface(
     hass, truenas_api, config_entry
 ):
     """Every interface graph is named "interface": set aside by name, one bad interface hid them all."""
-    graphs = truenas_api.responses["reporting.netdata_get_data"]
-
-    def answer(params):
-        if any(g.get("identifier") == "eth2" for g in params[0]):
-            return {"jsonrpc": "2.0", "id": 0, "error": {"code": 22, "message": "x"}}
-        return graphs(params)
-
-    truenas_api.responses["reporting.netdata_get_data"] = answer
-    config_entry.add_to_hass(hass)
-    assert await hass.config_entries.async_setup(config_entry.entry_id)
-    await hass.async_block_till_done()
-    coordinator = hass.data["truenas"][config_entry.entry_id]
-    assert coordinator._systemstats_errored == [("interface", "eth2")]
+    asked = reporting(truenas_api, lambda keys: ("interface", "eth2") in keys)
+    coordinator = await setup_entry(hass, config_entry)
     assert state(hass, "sensor.truenas_system_eth1_rx").state == "0.00145408"
+    asked.clear()
+    await coordinator.async_refresh()
+    assert ("interface", "eth2") not in last_batch(asked)
+    assert ("interface", "eth1") in last_batch(asked)
+
+
+async def test_a_disconnect_during_the_per_graph_retries_sets_nothing_aside(
+    hass, truenas_api, config_entry
+):
+    """A lost connection is not a graph TrueNAS cannot serve: the refresh fails, and nothing is set aside."""
+    state_ = {"phase": "ok", "calls": 0}
+
+    def fails(keys):
+        if state_["phase"] == "ok":
+            return False
+        state_["calls"] += 1
+        if state_["calls"] == 1:
+            return True  # the batch fails
+        truenas_api.disconnect()  # the first per-graph retry: the connection drops
+        truenas_api.connect = lambda: False
+        return True
+
+    asked = reporting(truenas_api, fails)
+    coordinator = await setup_entry(hass, config_entry)
+    state_["phase"] = "broken"
+    await coordinator.async_refresh()
+    assert coordinator.last_update_success is False
+    state_["phase"] = "ok"
+    truenas_api.connect = lambda: truenas_api.__class__.connect(truenas_api)
+    asked.clear()
+    await coordinator.async_refresh()
+    assert coordinator.last_update_success is True
+    assert ("arcsize", None) in last_batch(asked), "nothing was set aside"
