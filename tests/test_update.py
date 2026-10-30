@@ -39,7 +39,7 @@ async def test_an_app_with_an_update_offers_it(hass, truenas_api, setup):
 
 async def test_installing_an_app_update_upgrades_that_app(hass, truenas_api, setup):
     app = app_with_update(truenas_api)
-    truenas_api.responses["app.upgrade"] = 9429
+    truenas_api.responses["app.upgrade"] = 1234
     await setup()
     await hass.services.async_call(
         "update", "install", {"entity_id": APP_UPDATE}, blocking=True
@@ -125,8 +125,8 @@ async def test_an_app_upgrade_is_in_progress_only_while_its_job_runs(
     (every later install was refused with "Update installation already in progress" until HA restarted).
     """
     app = app_with_update(truenas_api)
-    truenas_api.responses["app.upgrade"] = 9429
-    job = {"id": 9429, "method": "app.upgrade", "state": "RUNNING"}
+    truenas_api.responses["app.upgrade"] = 1234
+    job = {"id": 1234, "method": "app.upgrade", "state": "RUNNING"}
     truenas_api.responses["core.get_jobs"] = jobs(job)
     await setup()
     entity = hass.data["update"].get_entity(APP_UPDATE)
@@ -153,8 +153,8 @@ async def test_a_failed_app_upgrade_is_no_longer_in_progress(
     hass, truenas_api, setup, final
 ):
     app_with_update(truenas_api)
-    truenas_api.responses["app.upgrade"] = 9429
-    job = {"id": 9429, "method": "app.upgrade", "state": "RUNNING"}
+    truenas_api.responses["app.upgrade"] = 1234
+    job = {"id": 1234, "method": "app.upgrade", "state": "RUNNING"}
     truenas_api.responses["core.get_jobs"] = jobs(job)
     await setup()
     entity = hass.data["update"].get_entity(APP_UPDATE)
@@ -172,9 +172,9 @@ async def test_a_job_truenas_no_longer_knows_is_not_in_progress(
 ):
     """TrueNAS restarted: core.get_jobs no longer has the job."""
     app_with_update(truenas_api)
-    truenas_api.responses["app.upgrade"] = 9429
+    truenas_api.responses["app.upgrade"] = 1234
     truenas_api.responses["core.get_jobs"] = jobs(
-        {"id": 9429, "method": "app.upgrade", "state": "RUNNING"}
+        {"id": 1234, "method": "app.upgrade", "state": "RUNNING"}
     )
     await setup()
     entity = hass.data["update"].get_entity(APP_UPDATE)
@@ -237,7 +237,9 @@ async def test_on_25_10_install_runs_the_update(hass, truenas_api, setup):
     await hass.services.async_call(
         "update", "install", {"entity_id": SYSTEM_UPDATE}, blocking=True
     )
-    assert truenas_api.called("update.run") == [[{"reboot": True}]]
+    assert truenas_api.called("update.run") == [
+        [{"reboot": True, "version": "25.10.8"}]
+    ]
     assert not truenas_api.called("update.update")
 
 
@@ -254,6 +256,7 @@ async def test_before_25_10_install_keeps_update_update(hass, truenas_api, setup
     )
     assert truenas_api.called("update.update") == [[{"reboot": True}]]
     assert not truenas_api.called("update.run")
+    assert not truenas_api.called("update.status"), "pre-25.10 has no update.status"
 
 
 # ---------------------------------------------------------------- review-2 1.1 / 1.3: the TrueNAS version
@@ -283,7 +286,9 @@ async def test_a_truenas_upgrade_while_ha_runs_switches_to_the_25_10_update_api(
     await hass.services.async_call(
         "update", "install", {"entity_id": SYSTEM_UPDATE}, blocking=True
     )
-    assert truenas_api.called("update.run") == [[{"reboot": True}]]
+    assert truenas_api.called("update.run") == [
+        [{"reboot": True, "version": "25.10.8"}]
+    ]
 
 
 @pytest.mark.parametrize(
@@ -432,3 +437,41 @@ async def test_a_waiting_system_update_job_is_in_progress(hass, truenas_api, set
     await coordinator.async_refresh()
     assert coordinator.ds["system_info"]["update_jobid"] == 4321
     assert hass.data["update"].get_entity(SYSTEM_UPDATE).in_progress
+
+
+# ---------------------------------------------------------------- review-2 1.6 and update.status's real shapes
+async def test_on_25_10_install_installs_exactly_the_version_shown(
+    hass, truenas_api, setup
+):
+    """update.run without a version installs the newest release, which may be newer than the one offered."""
+    truenas_api.responses["update.status"] = {
+        "code": "NORMAL",
+        "error": None,
+        "status": {
+            "current_version": {"train": "TrueNAS-SCALE-Goldeye"},
+            "new_version": {"version": "25.10.8", "train": "TrueNAS-SCALE-Goldeye"},
+        },
+        "update_download_progress": None,
+    }
+    truenas_api.responses["update.run"] = 4321
+    await setup()
+    await hass.services.async_call(
+        "update", "install", {"entity_id": SYSTEM_UPDATE}, blocking=True
+    )
+    ((options,),) = truenas_api.called("update.run")
+    assert options == {"reboot": True, "version": "25.10.8"}
+
+
+async def test_update_status_in_its_error_shape_offers_nothing(
+    hass, truenas_api, setup
+):
+    """update.status reports a failed check as code ERROR with `status: null`."""
+    truenas_api.responses["update.status"] = {
+        "code": "ERROR",
+        "error": "Unable to reach the update server",
+        "status": None,
+        "update_download_progress": None,
+    }
+    await setup()
+    st = hass.states.get(SYSTEM_UPDATE)
+    assert st.state == "off" and st.attributes["latest_version"] == "25.10.7"
