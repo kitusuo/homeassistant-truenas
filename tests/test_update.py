@@ -254,3 +254,56 @@ async def test_before_25_10_install_keeps_update_update(hass, truenas_api, setup
     )
     assert truenas_api.called("update.update") == [[{"reboot": True}]]
     assert not truenas_api.called("update.run")
+
+
+# ---------------------------------------------------------------- review-2 1.1 / 1.3: the TrueNAS version
+async def test_a_truenas_upgrade_while_ha_runs_switches_to_the_25_10_update_api(
+    hass, truenas_api, setup
+):
+    """The version was parsed once: upgraded from 25.04 to 25.10 under a running HA, the integration kept calling
+    update.check_available (gone) and update.update (configuration) until HA restarted.
+    """
+    truenas_api.responses["update.check_available"] = {
+        "status": "UNAVAILABLE",
+        "version": "",
+    }
+    truenas_api.responses["system.info"]["version"] = "25.04.2"
+    await setup()
+    coordinator = next(iter(hass.data["truenas"].values()))
+
+    truenas_api.responses["system.info"]["version"] = "25.10.7"
+    truenas_api.responses["update.status"]["status"]["new_version"] = {
+        "version": "25.10.8"
+    }
+    truenas_api.responses["update.run"] = 4321
+    await coordinator.async_refresh()
+    await hass.async_block_till_done()
+    st = hass.states.get(SYSTEM_UPDATE)
+    assert st.state == "on" and st.attributes["latest_version"] == "25.10.8"
+    await hass.services.async_call(
+        "update", "install", {"entity_id": SYSTEM_UPDATE}, blocking=True
+    )
+    assert truenas_api.called("update.run") == [[{"reboot": True}]]
+
+
+@pytest.mark.parametrize(
+    "version, new_api",
+    [
+        ("25.10-RC.1", True),
+        ("25.10.0-BETA.1", True),
+        ("TrueNAS-SCALE-24.04.2", False),
+        ("TrueNAS-13.0-U6.2", False),
+        ("MASTER-20261030", False),
+    ],
+)
+async def test_any_version_string_is_parsed_without_failing_the_refresh(
+    hass, truenas_api, setup, version, new_api
+):
+    """`int(version.split(".")[1])` raised on 25.10-RC.1, failing every refresh. Unparseable: the pre-25.10 calls."""
+    truenas_api.responses["system.info"]["version"] = version
+    truenas_api.responses["update.check_available"] = {"status": "UNAVAILABLE"}
+    await setup()
+    entry = next(iter(hass.config_entries.async_entries("truenas")))
+    assert entry.state.name == "LOADED"
+    assert bool(truenas_api.called("update.status")) is new_api
+    assert bool(truenas_api.called("update.check_available")) is not new_api
