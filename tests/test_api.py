@@ -181,8 +181,8 @@ def test_reconnect_and_connection_test():
 
 def test_a_result_that_has_an_error_field_is_a_result_not_an_error():
     """TrueNAS 25.10's update.status RESULT carries `"error": null`. The client took any "error" key for a JSON-RPC
-    error, read `"data" in None`, raised, disconnected — and the whole refresh failed ("TrueNas Disconnected"), live,
-    on 2026-10-30. Only a reply WITHOUT a result is an error."""
+    error, read `"data" in None`, raised, disconnected — and the whole refresh failed ("TrueNas Disconnected").
+    Only a reply WITHOUT a result is an error."""
     result = {
         "code": "NORMAL",
         "error": None,
@@ -197,7 +197,7 @@ def test_a_result_that_has_an_error_field_is_a_result_not_an_error():
 
 def test_every_recorded_result_passes_through_the_real_client_unchanged():
     """The coordinator tests use a fake API, which skips the real client's reply parsing — so a recorded result that
-    the client mishandles (update.status, 2026-10-30) never reached it. Every recorded result goes through it here.
+    the client mishandles (update.status) never reached it. Every recorded result goes through it here.
     """
     from .conftest import recording
 

@@ -190,9 +190,7 @@ class TrueNASAPI(object):
                 if message.startswith("{"):
                     data = json.loads(message)
                     if "result" in data:
-                        # a result is a result, whatever its fields: 25.10's
-                        # update.status result carries `"error": null`, which this
-                        # read as an error reply, raised on, and disconnected
+                        # a result is a result, whatever its fields
                         data = data["result"]
                     else:
                         # a JSON-RPC error reply: no result, an "error" object
