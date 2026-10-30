@@ -193,3 +193,15 @@ def test_a_result_that_has_an_error_field_is_a_result_not_an_error():
     assert api.query("update.status") == result
     assert api.connected(), "a result must not disconnect the client"
     assert api.error == ""
+
+
+def test_every_recorded_result_passes_through_the_real_client_unchanged():
+    """The coordinator tests use a fake API, which skips the real client's reply parsing — so a recorded result that
+    the client mishandles (update.status, 2026-10-30) never reached it. Every recorded result goes through it here.
+    """
+    from .conftest import recording
+
+    for method, result in recording().items():
+        api, _ = connected_api({"jsonrpc": "2.0", "id": 0, "result": result})
+        assert api.query(method) == result, method
+        assert api.connected() and api.error == "", method
