@@ -10,7 +10,10 @@ from .const import (
     DOMAIN,
     PLATFORMS,
 )
+from homeassistant.helpers import device_registry as dr
+
 from .coordinator import TrueNASCoordinator
+from .entity import system_device_info
 
 
 # ---------------------------
@@ -29,6 +32,11 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     coordinator = TrueNASCoordinator(hass, config_entry)
     await coordinator.async_config_entry_first_refresh()
     hass.data.setdefault(DOMAIN, {})[config_entry.entry_id] = coordinator
+    # the System device first: every other device names it as its parent by registry
+    # id (via_device_id), so it must exist before the platforms add their entities
+    dr.async_get(hass).async_get_or_create(
+        config_entry_id=config_entry.entry_id, **system_device_info(coordinator)
+    )
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
     config_entry.async_on_unload(config_entry.add_update_listener(async_reload_entry))
     return True

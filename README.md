@@ -116,7 +116,8 @@ config entries stay, so nothing needs to be set up again.
 
 Minimum requirements:
 * TrueNAS Core 12.0 or TrueNAS Scale (Any version) — tested against TrueNAS SCALE 25.10
-* Home Assistant 2024.3.0 (`hacs.json`) — tested against 2026.10
+* Home Assistant 2026.10.0 (`hacs.json`): device parents are given by registry id (`via_device_id`), which older
+  releases do not have — tested against 2026.10
 
 ## Using TrueNAS development branch
 If you are using development branch for TrueNAS, some features may stop working.
