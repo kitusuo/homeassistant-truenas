@@ -307,3 +307,128 @@ async def test_any_version_string_is_parsed_without_failing_the_refresh(
     assert entry.state.name == "LOADED"
     assert bool(truenas_api.called("update.status")) is new_api
     assert bool(truenas_api.called("update.check_available")) is not new_api
+
+
+# ---------------------------------------------------------------- review-2 1.2 / 1.4 / 1.5: job handling
+def recording_jobs(answer):
+    """Wrap a core.get_jobs answer to record every id the integration asks for."""
+    asked = []
+
+    def wrapped(params):
+        asked.append(params[0][0][2])
+        return answer(params)
+
+    wrapped.asked = asked
+    return wrapped
+
+
+async def test_an_error_reply_from_core_get_jobs_does_not_fail_the_refresh(
+    hass, truenas_api, setup
+):
+    """The client returns an error reply as a dict, so `job[0]` raised KeyError: every refresh failed, and the id was
+    never cleared, until HA restarted."""
+    app_with_update(truenas_api)
+    truenas_api.responses["app.upgrade"] = 1234
+    truenas_api.responses["core.get_jobs"] = jobs(
+        {"id": 1234, "method": "app.upgrade", "state": "RUNNING"}
+    )
+    await setup()
+    coordinator = next(iter(hass.data["truenas"].values()))
+    await hass.services.async_call(
+        "update", "install", {"entity_id": APP_UPDATE}, blocking=True
+    )
+    truenas_api.responses["core.get_jobs"] = lambda params: {
+        "jsonrpc": "2.0",
+        "id": 0,
+        "error": {"code": 13, "message": "Not authorized"},
+    }
+    await coordinator.async_refresh()
+    assert coordinator.last_update_success is True
+    assert hass.data["update"].get_entity(APP_UPDATE).in_progress is False
+
+
+async def test_a_waiting_app_job_is_in_progress(hass, truenas_api, setup):
+    app_with_update(truenas_api)
+    truenas_api.responses["app.upgrade"] = 1234
+    truenas_api.responses["core.get_jobs"] = jobs(
+        {"id": 1234, "method": "app.upgrade", "state": "WAITING"}
+    )
+    await setup()
+    coordinator = next(iter(hass.data["truenas"].values()))
+    await hass.services.async_call(
+        "update", "install", {"entity_id": APP_UPDATE}, blocking=True
+    )
+    await coordinator.async_refresh()
+    assert hass.data["update"].get_entity(APP_UPDATE).in_progress is True
+
+
+async def test_a_disconnect_while_reading_the_app_job_keeps_it_in_progress(
+    hass, truenas_api, setup
+):
+    app_with_update(truenas_api)
+    truenas_api.responses["app.upgrade"] = 1234
+    store = jobs({"id": 1234, "method": "app.upgrade", "state": "RUNNING"})
+    truenas_api.responses["core.get_jobs"] = store
+    await setup()
+    coordinator = next(iter(hass.data["truenas"].values()))
+    entity = hass.data["update"].get_entity(APP_UPDATE)
+    await hass.services.async_call(
+        "update", "install", {"entity_id": APP_UPDATE}, blocking=True
+    )
+
+    def drop(params):
+        truenas_api.disconnect()
+        return None
+
+    truenas_api.responses["core.get_jobs"] = drop
+    truenas_api.connect = lambda: False
+    await coordinator.async_refresh()
+    assert entity.in_progress is True, "a lost connection says nothing about the job"
+
+
+@pytest.mark.parametrize(
+    "entity_id, method", [(APP_UPDATE, "app.upgrade"), (SYSTEM_UPDATE, "update.run")]
+)
+async def test_an_error_reply_to_install_is_never_polled_as_a_job(
+    hass, truenas_api, setup, entity_id, method
+):
+    """Only a job id (an int) is kept: an error reply stored as the 'job id' was sent back in core.get_jobs."""
+    app_with_update(truenas_api)
+    truenas_api.responses["update.status"]["status"]["new_version"] = {
+        "version": "25.10.8"
+    }
+    asked = recording_jobs(jobs())
+    truenas_api.responses["core.get_jobs"] = asked
+    # `method` is absent from the responses: the fake answers a JSON-RPC error, as TrueNAS does
+    await setup()
+    await hass.services.async_call(
+        "update", "install", {"entity_id": entity_id}, blocking=True
+    )
+    coordinator = next(iter(hass.data["truenas"].values()))
+    await coordinator.async_refresh()
+    assert truenas_api.called(method), method
+    assert all(isinstance(i, int) for i in asked.asked), asked.asked
+
+
+async def test_a_waiting_system_update_job_is_in_progress(hass, truenas_api, setup):
+    """A queued (WAITING) update was cleared at once: only RUNNING counted."""
+    truenas_api.responses["update.status"]["status"]["new_version"] = {
+        "version": "25.10.8"
+    }
+    truenas_api.responses["update.run"] = 4321
+    truenas_api.responses["core.get_jobs"] = jobs(
+        {
+            "id": 4321,
+            "method": "update.run",
+            "state": "WAITING",
+            "progress": {"percent": 0},
+        }
+    )
+    await setup()
+    await hass.services.async_call(
+        "update", "install", {"entity_id": SYSTEM_UPDATE}, blocking=True
+    )
+    coordinator = next(iter(hass.data["truenas"].values()))
+    await coordinator.async_refresh()
+    assert coordinator.ds["system_info"]["update_jobid"] == 4321
+    assert hass.data["update"].get_entity(SYSTEM_UPDATE).in_progress
