@@ -76,10 +76,15 @@ class TrueNASUpdate(TrueNASEntity, UpdateEntity):
 
     async def async_install(self, version: str, backup: bool, **kwargs: Any) -> None:
         """Install an update."""
+        options = {"reboot": True}
+        if self.coordinator.new_update_api:
+            # exactly the version offered (or asked for): update.run without one
+            # installs the newest release, which may be newer than the one shown
+            options["version"] = version or self.latest_version
         jobid = await self.hass.async_add_executor_job(
             self.coordinator.api.query,
             "update.run" if self.coordinator.new_update_api else "update.update",
-            {"reboot": True},
+            options,
         )
         # only a job id (an int) is a job: an error reply must not be polled as one
         self._data["update_jobid"] = jobid if isinstance(jobid, int) else 0
