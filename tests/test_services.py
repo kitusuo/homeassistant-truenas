@@ -207,6 +207,50 @@ async def test_a_cloudsync_action_that_makes_no_sense_is_refused(
     )
 
 
+# ---------------------------------------------------------------- an error reply to get_instance (PR #4 review)
+ERROR_REPLY = {
+    "jsonrpc": "2.0",
+    "id": 0,
+    "error": {"code": 13, "message": "Not authorized"},
+}
+
+
+def refused(truenas_api, caplog, acts) -> None:
+    """The client returns None for an error reply (a deleted task, a key without the permission), and these handlers
+    tested `"state" in reply` on it: a TypeError instead of "invalid"."""
+    assert "invalid" in caplog.text
+    assert not [s for s, _ in truenas_api.calls if s in acts]
+
+
+@pytest.mark.parametrize(
+    "action", ["service_start", "service_stop", "service_restart", "service_reload"]
+)
+async def test_an_error_reply_to_service_get_instance_is_refused(
+    hass, setup_integration, truenas_api, action, caplog
+):
+    truenas_api.responses["service.get_instance"] = ERROR_REPLY
+    await call(hass, action, SERVICE)
+    refused(truenas_api, caplog, ACTIONS)
+
+
+@pytest.mark.parametrize("action", ["vm_start", "vm_stop"])
+async def test_an_error_reply_to_vm_get_instance_is_refused(
+    hass, with_vm, truenas_api, action, caplog
+):
+    truenas_api.responses["virt.instance.get_instance"] = ERROR_REPLY
+    await call(hass, action, with_vm)
+    refused(truenas_api, caplog, ("virt.instance.start", "virt.instance.stop"))
+
+
+@pytest.mark.parametrize("action", ["cloudsync_run", "cloudsync_abort"])
+async def test_an_error_reply_to_cloudsync_get_instance_is_refused(
+    hass, setup_integration, truenas_api, action, caplog
+):
+    truenas_api.responses["cloudsync.get_instance"] = ERROR_REPLY
+    await call(hass, action, CLOUDSYNC)
+    refused(truenas_api, caplog, ("cloudsync.sync", "cloudsync.abort"))
+
+
 async def test_dataset_snapshot(hass, setup_integration, truenas_api):
     await call(hass, "dataset_snapshot", "sensor.truenas_datasets_pool1_ds8")
     ((params,),) = truenas_api.called(
