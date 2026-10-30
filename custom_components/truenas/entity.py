@@ -10,6 +10,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_ATTRIBUTION, CONF_HOST, CONF_NAME
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import (
+    device_registry as dr,
     entity_platform as ep,
     entity_registry as er,
 )
@@ -26,6 +27,31 @@ from .coordinator import TrueNASCoordinator
 from .helper import format_attribute
 
 _LOGGER = getLogger(__name__)
+
+
+# ---------------------------
+#   the System device
+# ---------------------------
+def system_identifier(coordinator: TrueNASCoordinator) -> tuple[str, str]:
+    """The System device's identifier: every other device hangs off it."""
+    return (
+        DOMAIN,
+        f"{coordinator.config_entry.data[CONF_NAME]}_{coordinator.data['system_info']['hostname']}",
+    )
+
+
+def system_device_info(coordinator: TrueNASCoordinator) -> DeviceInfo:
+    """The System device, as its entities describe it and as setup registers it."""
+    info = coordinator.data["system_info"]
+    return DeviceInfo(
+        connections={system_identifier(coordinator)},
+        identifiers={system_identifier(coordinator)},
+        name="System",
+        model=f"{info['system_product']}",
+        manufacturer=f"{info['system_manufacturer']}",
+        sw_version=f"{info['version']}",
+        configuration_url=f"http://{coordinator.config_entry.data[CONF_HOST]}",
+    )
 
 
 # ---------------------------
@@ -189,27 +215,23 @@ class TrueNASEntity(CoordinatorEntity[TrueNASCoordinator], Entity):
                 )
 
         if self.entity_description.ha_group == "System":
-            return DeviceInfo(
-                connections={(dev_connection, f"{dev_connection_value}")},
-                identifiers={(dev_connection, f"{dev_connection_value}")},
-                name=dev_group,
-                model=f"{self.coordinator.data['system_info']['system_product']}",
-                manufacturer=f"{self.coordinator.data['system_info']['system_manufacturer']}",
-                sw_version=f"{self.coordinator.data['system_info']['version']}",
-                configuration_url=f"http://{self.coordinator.config_entry.data[CONF_HOST]}",
-            )
-        else:
-            return DeviceInfo(
-                connections={(dev_connection, f"{dev_connection_value}")},
-                # the default_* parameters are deprecated (removed in HA 2027.9)
-                name=dev_group,
-                model=f"{self.coordinator.data['system_info']['system_product']}",
-                manufacturer=f"{self.coordinator.data['system_info']['system_manufacturer']}",
-                via_device=(
-                    DOMAIN,
-                    f"{self._inst}_{self.coordinator.data['system_info']['hostname']}",
-                ),
-            )
+            return system_device_info(self.coordinator)
+
+        info = DeviceInfo(
+            connections={(dev_connection, f"{dev_connection_value}")},
+            # the default_* parameters are deprecated (removed in HA 2027.9)
+            name=dev_group,
+            model=f"{self.coordinator.data['system_info']['system_product']}",
+            manufacturer=f"{self.coordinator.data['system_info']['system_manufacturer']}",
+        )
+        # the parent by its registry id: `via_device` (its identifier) is removed in
+        # HA 2027.8. The System device is registered at setup, before any of these.
+        system = dr.async_get(self.hass).async_get_device_by_identifier(
+            system_identifier(self.coordinator), self.coordinator.config_entry.entry_id
+        )
+        if system is not None:
+            info["via_device_id"] = system.id
+        return info
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any]:
