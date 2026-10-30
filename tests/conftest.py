@@ -176,3 +176,20 @@ async def setup_integration(hass, truenas_api, config_entry):
     assert await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
     return config_entry
+
+
+@pytest.fixture
+def ha_deprecations(monkeypatch):
+    """Every deprecation Home Assistant reports while this test runs (its `report_usage`, from the device registry
+    and the entity platform). A spy, not the log: the log wording can change, and HA reports each one only once per
+    process, so a log check silently passes after an earlier test triggered it."""
+    from homeassistant.helpers import device_registry, entity_platform
+
+    seen: list[str] = []
+
+    def spy(what, *args, **kwargs):
+        seen.append(str(what))
+
+    monkeypatch.setattr(device_registry, "report_usage", spy)
+    monkeypatch.setattr(entity_platform, "report_usage", spy)
+    return seen
